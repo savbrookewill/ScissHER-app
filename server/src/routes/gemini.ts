@@ -1,10 +1,10 @@
 import { Router } from 'express';
-import { GoogleGenerativeAI } from '@google/genai';
+import { GoogleGenAI } from '@google/genai';
 
 const router = Router();
 
 // Initialize Gemini AI
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
+const genAI = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || '' });
 
 router.post('/generate', async (req, res, next) => {
   try {
@@ -18,10 +18,12 @@ router.post('/generate', async (req, res, next) => {
       return res.status(500).json({ error: 'API key not configured' });
     }
 
-    const geminiModel = genAI.getGenerativeModel({ model });
-    const result = await geminiModel.generateContent(prompt);
-    const response = result.response;
-    const text = response.text();
+    const result = await genAI.models.generateContent({
+      model,
+      contents: prompt
+    });
+    
+    const text = result.text || '';
 
     res.json({ text });
   } catch (error: any) {
@@ -42,15 +44,16 @@ router.post('/chat', async (req, res, next) => {
       return res.status(500).json({ error: 'API key not configured' });
     }
 
-    const geminiModel = genAI.getGenerativeModel({ model });
-    const chat = geminiModel.startChat({
-      history: messages.slice(0, -1),
+    // Format messages for the API
+    const lastMessage = messages[messages.length - 1];
+    const prompt = `${messages.map(m => `${m.role}: ${m.parts}`).join('\n')}\n`;
+
+    const result = await genAI.models.generateContent({
+      model,
+      contents: prompt
     });
 
-    const lastMessage = messages[messages.length - 1];
-    const result = await chat.sendMessage(lastMessage.parts);
-    const response = result.response;
-    const text = response.text();
+    const text = result.text || '';
 
     res.json({ text });
   } catch (error: any) {
