@@ -1,8 +1,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { User } from '../types';
-/* Fix: Added Gemini API import */
-import { GoogleGenAI } from "@google/genai";
+import { apiService } from '../services/api';
 
 interface SpeedDatingViewProps {
   user: User | null;
@@ -70,7 +69,7 @@ const SpeedDatingView: React.FC<SpeedDatingViewProps> = ({ user, onUpdateTickets
     }
   };
 
-  /* Fix: Implemented dynamic responses using Gemini API */
+  /* Fix: Implemented dynamic responses using secure backend API */
   const handleSend = async () => {
     if (!inputText.trim()) return;
     const currentInput = inputText;
@@ -78,22 +77,20 @@ const SpeedDatingView: React.FC<SpeedDatingViewProps> = ({ user, onUpdateTickets
     setInputText('');
     
     try {
-      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       const history = messages
         .filter(m => m.sender !== 'System')
         .map(m => `${m.sender}: ${m.text}`)
         .join('\n');
 
-      const response = await ai.models.generateContent({
-        model: 'gemini-3-flash-preview',
-        contents: `You are participating in a roleplay as a mystery person on ScissHER, a queer dating app for women.
+      const prompt = `You are participating in a roleplay as a mystery person on ScissHER, a queer dating app for women.
         You are in a 3-minute "Blind Sesh" chat where users can't see each other yet. 
         Be intentional, mysterious, and engaging. Avoid generic AI phrasing.
         Current chat history:
         ${history}
         New message from potential match: "${currentInput}"
-        Respond as the Mystery Girl. Keep the response short, under 20 words.`,
-      });
+        Respond as the Mystery Girl. Keep the response short, under 20 words.`;
+
+      const response = await apiService.generateContent(prompt, 'gemini-2.0-flash-exp');
       
       const reply = response.text || "That's intriguing... what else is on your mind?";
       setMessages(prev => [...prev, { sender: 'Mystery Girl', text: reply }]);
