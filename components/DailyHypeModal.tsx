@@ -13,7 +13,7 @@ const DailyHypeModal: React.FC<DailyHypeModalProps> = ({ onClose }) => {
     <div className="fixed inset-0 z-[200] flex items-center justify-center p-6 bg-slate-950/90 backdrop-blur-xl animate-in fade-in duration-500">
       <div className="absolute top-[-10%] left-[-10%] w-[120%] h-[120%] bg-[radial-gradient(circle_at_center,_rgba(255,0,128,0.15)_0%,_transparent_70%)] animate-pulse pointer-events-none"></div>
       
-      <div className="w-full max-w-sm glass p-10 rounded-[4rem] border-white/10 text-center space-y-8 relative overflow-hidden shadow-[0_0_50px_rgba(255,0,128,0.2)] animate-in zoom-in slide-in-from-bottom-10 duration-700">
+      <div className="w-full max-sm glass p-10 rounded-[4rem] border-white/10 text-center space-y-8 relative overflow-hidden shadow-[0_0_50px_rgba(255,0,128,0.2)] animate-in zoom-in slide-in-from-bottom-10 duration-700">
         <div className="absolute top-0 left-0 w-full h-1 petal-gradient"></div>
         
         <div className="relative">
@@ -27,7 +27,7 @@ const DailyHypeModal: React.FC<DailyHypeModalProps> = ({ onClose }) => {
              </div>
           </div>
           <div className="flex flex-col gap-1">
-            <p className="text-[10px] font-black text-pink-500 uppercase tracking-[0.4em]">Identity Verified</p>
+            <p className="text-[10px] font-black text-pink-500 uppercase tracking-[0.4em]">Phone Number Verified</p>
             <p className="text-[8px] font-black text-slate-500 uppercase tracking-[0.2em]">Intention Status: Maximum ✨</p>
           </div>
         </div>

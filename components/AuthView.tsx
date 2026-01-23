@@ -11,16 +11,7 @@ type AuthMode = 'choice' | 'login' | 'signup';
 
 const AuthView: React.FC<AuthViewProps> = ({ onLogin, onCreateAccount }) => {
   const [mode, setMode] = useState<AuthMode>('choice');
-  const [acceptedTerms, setAcceptedTerms] = useState(false);
-
-  const handleAction = () => {
-    // App Store Requirement: Users must explicitly agree to EULA before account creation or login
-    if (!acceptedTerms && (mode === 'login' || mode === 'signup')) {
-      alert("Required: You must agree to the ScissHER EULA and Privacy Policy to access this intentional community.");
-      return;
-    }
-    mode === 'login' ? onLogin() : onCreateAccount();
-  };
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
 
   const renderSocialButtons = () => (
     <div className="space-y-3">
@@ -30,10 +21,10 @@ const AuthView: React.FC<AuthViewProps> = ({ onLogin, onCreateAccount }) => {
         <div className="h-[1px] flex-1 bg-white/5"></div>
       </div>
       <div className="grid grid-cols-1 gap-3">
-        <button onClick={handleAction} className="w-full py-3.5 glass rounded-[1.5rem] flex items-center justify-center gap-3 font-black text-[10px] uppercase tracking-widest text-white border border-white/5 hover:border-white/20 transition-all"><i className="fa-brands fa-apple text-lg"></i>Secure Apple Sign-In</button>
+        <button onClick={onLogin} className="w-full py-3.5 glass rounded-[1.5rem] flex items-center justify-center gap-3 font-black text-[10px] uppercase tracking-widest text-white border border-white/5 hover:border-white/20 transition-all"><i className="fa-brands fa-apple text-lg"></i>Apple Sign-In</button>
         <div className="grid grid-cols-2 gap-3">
-          <button onClick={handleAction} className="w-full py-3.5 glass rounded-[1.5rem] flex items-center justify-center gap-3 font-black text-[10px] uppercase tracking-widest text-white border border-white/5 transition-all"><i className="fa-brands fa-google text-red-400"></i>Google</button>
-          <button onClick={handleAction} className="w-full py-3.5 glass rounded-[1.5rem] flex items-center justify-center gap-3 font-black text-[10px] uppercase tracking-widest text-white border border-white/5 transition-all"><i className="fa-brands fa-facebook text-blue-500"></i>Facebook</button>
+          <button onClick={onLogin} className="w-full py-3.5 glass rounded-[1.5rem] flex items-center justify-center gap-3 font-black text-[10px] uppercase tracking-widest text-white border border-white/5 transition-all"><i className="fa-brands fa-google text-red-400"></i>Google</button>
+          <button onClick={onLogin} className="w-full py-3.5 glass rounded-[1.5rem] flex items-center justify-center gap-3 font-black text-[10px] uppercase tracking-widest text-white border border-white/5 transition-all"><i className="fa-brands fa-facebook text-blue-500"></i>Facebook</button>
         </div>
       </div>
     </div>
@@ -48,36 +39,67 @@ const AuthView: React.FC<AuthViewProps> = ({ onLogin, onCreateAccount }) => {
           <NormalScissorsIcon className="w-12 h-12 drop-shadow-[0_0_10px_white]" color="white" />
         </div>
         <div className="text-center space-y-2 w-full px-2 overflow-visible">
-          <h1 className="text-4xl xs:text-5xl font-black tracking-tighter text-white uppercase italic leading-[1.1] py-1 px-4 overflow-visible"><span className="shimmer-text">ScissHER</span></h1>
-          <p className="text-[9px] font-black uppercase tracking-[0.4em] text-slate-500">Intentional Lesbian Connection</p>
+          <h1 className="text-4xl xs:text-5xl font-black tracking-tighter text-white italic leading-[1.1] py-1 px-4 overflow-visible"><span className="shimmer-text">ScissHER</span></h1>
+          <p className="text-[9px] font-black uppercase tracking-[0.4em] text-slate-500 italic">Dating with Intention</p>
         </div>
       </div>
 
       <div className="w-full max-w-xs space-y-3 relative z-10 my-8">
         {mode === 'choice' && (
           <div className="space-y-4 animate-in fade-in zoom-in duration-300">
-            <button onClick={() => setMode('login')} className="w-full py-5 shimmer-btn rounded-[2rem] font-black text-xs uppercase tracking-[0.2em] text-white shadow-2xl transition-all">Member Login</button>
-            <button onClick={() => setMode('signup')} className="w-full py-5 glass border border-white/10 rounded-[2rem] font-black text-xs uppercase tracking-[0.2em] text-white transition-all">Join The Garden</button>
+            <button 
+              onClick={() => setMode('login')} 
+              className="w-full py-6 glass border border-white/10 rounded-[2rem] font-black text-sm uppercase tracking-[0.2em] text-white transition-all shadow-xl flex flex-col items-center gap-1"
+            >
+              <span className="text-pink-500 text-[10px]">Welcome Back</span>
+              Member Login
+            </button>
+            <button 
+              onClick={() => setMode('signup')} 
+              className="w-full py-6 shimmer-btn rounded-[2rem] font-black text-sm uppercase tracking-[0.2em] text-white shadow-2xl transition-all flex flex-col items-center gap-1"
+            >
+              <span className="text-white/60 text-[10px]">New Here?</span>
+              Create Account
+            </button>
           </div>
         )}
 
         {(mode === 'login' || mode === 'signup') && (
           <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-300">
-            <div className="space-y-2">
-              <input type="text" placeholder="Identity / Email" className="w-full bg-slate-900 border border-white/10 rounded-2xl px-6 py-4 text-sm text-white focus:outline-none focus:ring-2 focus:ring-pink-500/30" />
-              <input type="password" placeholder="Passcode" className="w-full bg-slate-900 border border-white/10 rounded-2xl px-6 py-4 text-sm text-white focus:outline-none focus:ring-2 focus:ring-pink-500/30" />
+            <div className="space-y-3">
+              <input type="text" placeholder="Phone Number / Email" className="w-full bg-slate-900 border border-white/10 rounded-2xl px-6 py-4 text-sm text-white focus:outline-none focus:ring-2 focus:ring-pink-500/30 shadow-inner" />
+              <div className="space-y-2">
+                <input type="password" placeholder="Password" className="w-full bg-slate-900 border border-white/10 rounded-2xl px-6 py-4 text-sm text-white focus:outline-none focus:ring-2 focus:ring-pink-500/30 shadow-inner" />
+                <div className="flex justify-end px-2">
+                  <button className="text-[9px] font-black uppercase tracking-widest text-slate-500 hover:text-pink-500 transition-colors">Forgot Password?</button>
+                </div>
+              </div>
             </div>
 
-            <div className="flex items-start gap-3 px-2 py-3 bg-white/5 rounded-2xl border border-white/5">
-              <input type="checkbox" id="terms" checked={acceptedTerms} onChange={() => setAcceptedTerms(!acceptedTerms)} className="mt-1 w-5 h-5 rounded-md border-white/10 bg-slate-900 accent-pink-500 shrink-0" />
-              <label htmlFor="terms" className="text-[8px] font-black text-slate-400 uppercase tracking-widest leading-relaxed">
-                I agree to the <span className="text-white border-b border-white/20">Standard EULA</span>, Community Guidelines & <span className="text-white border-b border-white/20">Privacy Policy</span>.
-              </label>
-            </div>
+            {mode === 'signup' && (
+              <div className="flex items-start gap-3 px-2 py-2">
+                <button 
+                  onClick={() => setAgreedToTerms(!agreedToTerms)}
+                  className={`w-5 h-5 rounded-md border flex items-center justify-center transition-all shrink-0 ${agreedToTerms ? 'bg-pink-600 border-pink-500' : 'bg-slate-900 border-white/10'}`}
+                >
+                  {agreedToTerms && <i className="fa-solid fa-check text-[10px] text-white"></i>}
+                </button>
+                <p className="text-[9px] text-slate-500 font-medium leading-relaxed">
+                  I agree to the <span className="text-white underline">Terms of Service</span> and <span className="text-white underline">Privacy Policy</span>.
+                </p>
+              </div>
+            )}
 
-            <button onClick={handleAction} className="w-full py-4 shimmer-btn rounded-[1.8rem] font-black text-xs uppercase tracking-[0.2em] text-white shadow-2xl transition-all">{mode === 'login' ? 'Sign In' : 'Begin Verification'}</button>
+            <button 
+              onClick={mode === 'login' ? onLogin : onCreateAccount} 
+              disabled={mode === 'signup' && !agreedToTerms}
+              className={`w-full py-4 rounded-[1.8rem] font-black text-xs uppercase tracking-[0.2em] text-white shadow-2xl transition-all ${mode === 'signup' && !agreedToTerms ? 'bg-slate-800 text-slate-600 cursor-not-allowed opacity-50' : 'shimmer-btn'}`}
+            >
+              {mode === 'login' ? 'Sign In' : 'Continue'}
+            </button>
+            
             {renderSocialButtons()}
-            <button onClick={() => setMode('choice')} className="w-full py-3 text-[10px] font-black uppercase tracking-widest text-slate-500">Cancel</button>
+            <button onClick={() => setMode('choice')} className="w-full py-3 text-[10px] font-black uppercase tracking-widest text-slate-500">Back to Options</button>
           </div>
         )}
       </div>

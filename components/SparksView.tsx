@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { MOCK_USERS } from '../constants';
 import UserProfileModal from './UserProfileModal';
@@ -22,7 +21,7 @@ const SparksView: React.FC<SparksViewProps> = ({ likedUsers, onUpgrade }) => {
   return (
     <div className="space-y-6 pb-20">
       <div className="flex items-center justify-between px-2">
-        <h2 className="text-3xl font-black tracking-tighter shimmer-text">Electric Garden</h2>
+        <h2 className="text-3xl font-black tracking-tighter shimmer-text">Electric Scene</h2>
         <span className="text-pink-500 text-[10px] font-black uppercase tracking-[0.2em]">{likedUsers.length} SPARKS FIRED</span>
       </div>
 
@@ -54,7 +53,7 @@ const SparksView: React.FC<SparksViewProps> = ({ likedUsers, onUpgrade }) => {
                   className="w-full py-2.5 shimmer-btn rounded-xl text-[9px] font-black uppercase tracking-[0.2em] text-white shadow-lg flex items-center justify-center gap-2 border border-white/10 active:scale-95 transition-all"
                 >
                   <i className="fa-solid fa-bolt"></i>
-                  Call a Sesh
+                  Send a Sesh Request
                 </button>
                 <button 
                   onClick={() => setSelectedUser(user)}
@@ -74,7 +73,7 @@ const SparksView: React.FC<SparksViewProps> = ({ likedUsers, onUpgrade }) => {
            <i className="fa-solid fa-sparkles text-2xl"></i>
         </div>
         <div className="relative z-10">
-          <h3 className="font-black text-2xl tracking-tight shimmer-text">Full Bloom</h3>
+          <h3 className="font-black text-2xl tracking-tight shimmer-text">Full Connection</h3>
           <p className="text-xs text-slate-500 font-medium leading-relaxed px-4">Stop guessing who's vibing with you. Reveal the Sparks before you even swipe.</p>
         </div>
         <button onClick={onUpgrade} className="w-full py-4 shimmer-btn rounded-2xl font-black text-sm uppercase tracking-[0.2em] text-white shadow-xl shadow-purple-600/20 active:scale-95 transition-all relative z-10">Ascend to Premium</button>
@@ -84,7 +83,6 @@ const SparksView: React.FC<SparksViewProps> = ({ likedUsers, onUpgrade }) => {
         <UserProfileModal 
           user={selectedUser} 
           onClose={() => setSelectedUser(null)} 
-          // Fix: Used 'onSendPetal' instead of non-existent 'onSendGlint' to match UserProfileModalProps
           onSendPetal={() => alert("Spark refreshed! ⚡️")}
         />
       )}

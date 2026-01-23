@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { AppView } from '../types';
-import { RoseIcon } from './Header';
 
 interface NavigationProps {
   currentView: AppView;
@@ -11,7 +10,7 @@ interface NavigationProps {
 const Navigation: React.FC<NavigationProps> = ({ currentView, setView }) => {
   const items = [
     { id: 'discovery', icon: 'fa-solid fa-wand-magic-sparkles', label: 'Explore' },
-    { id: 'petal', icon: 'rose', label: 'Petals' },
+    { id: 'spark', icon: 'fa-solid fa-bolt-lightning', label: 'Sparks' },
     { id: 'live', icon: 'fa-solid fa-tower-broadcast', label: 'Live' },
     { id: 'calendar', icon: 'fa-solid fa-calendar-star', label: 'Sesh' },
     { id: 'profile', icon: 'fa-solid fa-user', label: 'Profile' },
@@ -28,11 +27,7 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, setView }) => {
           }`}
         >
           <div className="relative">
-            {item.icon === 'rose' ? (
-              <RoseIcon className={`text-lg xs:text-xl ${currentView === 'petal' ? 'text-pink-500' : 'text-slate-500'}`} />
-            ) : (
-              <i className={`${item.icon} text-lg xs:text-xl`}></i>
-            )}
+            <i className={`${item.icon} text-lg xs:text-xl`}></i>
             {currentView === item.id && (
               <div className="absolute inset-0 bg-pink-500 blur-xl opacity-30"></div>
             )}

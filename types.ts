@@ -37,6 +37,7 @@ export interface User {
   speedDatingTickets: number;
   socialLinks?: SocialLink[];
   isBlocked?: boolean;
+  isReported?: boolean;
 }
 
 export interface AvailabilitySlot {
@@ -66,6 +67,6 @@ export interface DatingEvent {
   isLive?: boolean;
 }
 
-export type AppView = 'discovery' | 'petal' | 'calendar' | 'events' | 'profile' | 'vault' | 'live';
+export type AppView = 'discovery' | 'spark' | 'calendar' | 'events' | 'profile' | 'vault' | 'live';
 
-export type AuthState = 'landing' | 'verifying' | 'onboarding' | 'authorized';
+export type AuthState = 'landing' | 'verifying' | 'identity' | 'onboarding' | 'authorized';

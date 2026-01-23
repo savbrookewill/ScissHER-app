@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 
 interface PhotoItem {
   id: string;
@@ -14,27 +14,43 @@ interface PhotoOnboardingProps {
 const PhotoOnboarding: React.FC<PhotoOnboardingProps> = ({ onComplete }) => {
   const [photos, setPhotos] = useState<PhotoItem[]>([]);
   const [uploading, setUploading] = useState(false);
+  const [isInstaConnected, setIsInstaConnected] = useState(false);
+  const [draggedIdx, setDraggedIdx] = useState<number | null>(null);
+  const longPressTimer = useRef<any>(null);
 
-  // Fix: Capture files from the event target immediately to prevent null access in async timeout
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
-    
-    // Capture files into an array before the timeout to avoid closure issues with React's synthetic events
     const filesArray = Array.from(e.target.files);
     
     setUploading(true);
-    // Simulating upload/processing
     setTimeout(() => {
       const newPhotos: PhotoItem[] = filesArray.map((file) => ({
         id: Math.random().toString(36).substr(2, 9),
-        // URL.createObjectURL expects a Blob or File. Fixes: Argument of type 'unknown' is not assignable.
         url: URL.createObjectURL(file as Blob),
         isPrivate: false
       }));
-      
       setPhotos(prev => [...prev, ...newPhotos]);
       setUploading(false);
-    }, 1000);
+    }, 800);
+  };
+
+  const handleInstagramConnect = () => {
+    if (isInstaConnected) {
+      setIsInstaConnected(false);
+      return;
+    }
+    
+    setUploading(true);
+    // Simulate Instagram OAuth
+    setTimeout(() => {
+      setIsInstaConnected(true);
+      const instaPhotos: PhotoItem[] = [
+        { id: 'insta1', url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400', isPrivate: false },
+        { id: 'insta2', url: 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=400', isPrivate: false }
+      ];
+      setPhotos(prev => [...prev, ...instaPhotos]);
+      setUploading(false);
+    }, 1200);
   };
 
   const togglePrivate = (id: string) => {
@@ -45,7 +61,24 @@ const PhotoOnboarding: React.FC<PhotoOnboardingProps> = ({ onComplete }) => {
     setPhotos(prev => prev.filter(p => p.id !== id));
   };
 
-  const isReady = photos.length >= 3;
+  const handleDragStart = (idx: number) => {
+    setDraggedIdx(idx);
+  };
+
+  const handleDragOver = (idx: number) => {
+    if (draggedIdx === null || draggedIdx === idx) return;
+    const newPhotos = [...photos];
+    const item = newPhotos.splice(draggedIdx, 1)[0];
+    newPhotos.splice(idx, 0, item);
+    setPhotos(newPhotos);
+    setDraggedIdx(idx);
+  };
+
+  const handleDragEnd = () => {
+    setDraggedIdx(null);
+  };
+
+  const isReady = photos.length >= 5;
 
   const handleSubmit = () => {
     if (!isReady) return;
@@ -55,94 +88,118 @@ const PhotoOnboarding: React.FC<PhotoOnboardingProps> = ({ onComplete }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-[#020617] z-[100] flex flex-col items-center justify-start py-12 px-8 overflow-y-auto no-scrollbar">
-      <div className="absolute top-[-10%] left-[-10%] w-[120%] h-[120%] bg-[radial-gradient(circle_at_center,_rgba(255,0,128,0.05)_0%,_transparent_70%)] pointer-events-none"></div>
+    <div className="fixed inset-0 bg-[#020617] z-[100] flex flex-col items-center justify-start py-12 px-6 overflow-y-auto no-scrollbar">
+      <div className="absolute top-[-10%] left-[-10%] w-[120%] h-[120%] bg-[radial-gradient(circle_at_center,_rgba(255,0,128,0.08)_0%,_transparent_70%)] pointer-events-none"></div>
 
-      <div className="text-center space-y-4 max-w-xs relative z-10 w-full mb-10">
-        <h1 className="text-3xl font-black tracking-tighter text-white uppercase italic leading-tight">
+      <div className="text-center space-y-3 max-w-xs relative z-10 w-full mb-10">
+        <h1 className="text-4xl font-black tracking-tighter text-white italic leading-tight">
           <span className="shimmer-text">Curate Your Story</span>
         </h1>
-        <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">
-          Upload at least 3 intentional photos to begin
+        <p className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-500">
+          Upload 5+ intentional photos
         </p>
-        <div className="w-full bg-slate-900/50 rounded-full h-1.5 mt-2 overflow-hidden border border-white/5">
-          <div 
-            className="h-full petal-gradient transition-all duration-500 ease-out" 
-            style={{ width: `${Math.min((photos.length / 3) * 100, 100)}%` }}
-          ></div>
-        </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 w-full max-sm relative z-10">
-        {photos.map((photo) => (
-          <div key={photo.id} className="relative aspect-square rounded-[2rem] overflow-hidden border border-white/10 group shadow-2xl animate-in zoom-in duration-300">
-            <img src={photo.url} className="w-full h-full object-cover" alt="Upload" />
-            
-            {/* Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            
-            <button 
-              onClick={() => removePhoto(photo.id)}
-              className="absolute top-3 right-3 w-8 h-8 rounded-xl bg-red-500/80 backdrop-blur-md flex items-center justify-center text-white text-[10px] opacity-0 group-hover:opacity-100 transition-all active:scale-90"
-            >
-              <i className="fa-solid fa-trash-can"></i>
-            </button>
+      <div className="w-full max-w-xs space-y-6 relative z-10">
+        {/* Instagram Integration Card */}
+        <div className={`p-6 rounded-[2.5rem] border transition-all duration-500 ${isInstaConnected ? 'bg-gradient-to-br from-pink-600/10 to-purple-600/10 border-pink-500/30 shadow-[0_0_30px_rgba(255,0,128,0.1)]' : 'bg-slate-900/50 border-white/5 shadow-xl'}`}>
+           <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                 <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-white shadow-lg ${isInstaConnected ? 'petal-gradient' : 'bg-slate-800'}`}>
+                    <i className="fa-brands fa-instagram text-xl"></i>
+                 </div>
+                 <div className="flex flex-col">
+                    <span className="text-[10px] font-black text-white uppercase tracking-widest">Instagram</span>
+                    <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest">Optional Sync</span>
+                 </div>
+              </div>
+              <button 
+                onClick={handleInstagramConnect}
+                className={`px-4 py-2 rounded-xl text-[8px] font-black uppercase tracking-widest transition-all ${isInstaConnected ? 'bg-pink-600 text-white' : 'bg-slate-800 text-slate-400 hover:text-white'}`}
+              >
+                {isInstaConnected ? 'Connected' : 'Connect'}
+              </button>
+           </div>
+           {!isInstaConnected && (
+             <p className="text-[9px] text-slate-500 leading-relaxed font-medium">
+               Link your Instagram to instantly import your best moments and verify your social presence.
+             </p>
+           )}
+        </div>
 
-            <button 
-              onClick={() => togglePrivate(photo.id)}
-              className={`absolute bottom-3 left-3 right-3 py-2 rounded-xl flex items-center justify-center gap-2 text-[8px] font-black uppercase tracking-widest transition-all ${
-                photo.isPrivate 
-                ? 'bg-pink-600 text-white' 
-                : 'bg-white/10 backdrop-blur-md text-white border border-white/20'
+        {/* Photo Grid */}
+        <div className="grid grid-cols-3 gap-3">
+          {photos.map((photo, idx) => (
+            <div 
+              key={photo.id} 
+              draggable 
+              onDragStart={() => handleDragStart(idx)}
+              onDragOver={(e) => { e.preventDefault(); handleDragOver(idx); }}
+              onDragEnd={handleDragEnd}
+              className={`relative aspect-square rounded-2xl overflow-hidden border transition-all duration-300 shadow-xl group ${
+                draggedIdx === idx ? 'opacity-40 scale-90 border-pink-500' : 'border-white/10'
               }`}
             >
-              <i className={`fa-solid ${photo.isPrivate ? 'fa-lock' : 'fa-lock-open'}`}></i>
-              {photo.isPrivate ? 'Private' : 'Public'}
-            </button>
-          </div>
-        ))}
+              <img src={photo.url} className="w-full h-full object-cover pointer-events-none" alt="Upload" />
+              
+              <button 
+                onClick={() => removePhoto(photo.id)}
+                className="absolute top-1.5 right-1.5 w-6 h-6 rounded-lg bg-red-500/80 backdrop-blur-md flex items-center justify-center text-white text-[8px] opacity-0 group-hover:opacity-100 transition-all"
+              >
+                <i className="fa-solid fa-x"></i>
+              </button>
 
-        {/* Upload Button */}
-        <label className="aspect-square bg-slate-900/40 border-2 border-dashed border-white/10 rounded-[2rem] flex flex-col items-center justify-center cursor-pointer hover:border-pink-500/50 transition-all group shadow-xl relative overflow-hidden">
-          <input type="file" multiple onChange={handleFileSelect} className="hidden" accept="image/*" />
-          {uploading ? (
-            <div className="flex flex-col items-center gap-2">
-              <i className="fa-solid fa-spinner-third animate-spin text-pink-500 text-2xl"></i>
-              <span className="text-[8px] font-black text-pink-500 uppercase tracking-widest">Processing...</span>
+              <button 
+                onClick={() => togglePrivate(photo.id)}
+                className={`absolute bottom-1.5 left-1.5 right-1.5 py-1 rounded-lg flex items-center justify-center gap-1.5 text-[6px] font-black uppercase tracking-[0.15em] transition-all ${
+                  photo.isPrivate 
+                  ? 'bg-pink-600 text-white' 
+                  : 'bg-black/40 backdrop-blur-md text-white border border-white/10'
+                }`}
+              >
+                <i className={`fa-solid ${photo.isPrivate ? 'fa-lock' : 'fa-lock-open'}`}></i>
+                {photo.isPrivate ? 'Vault' : 'Public'}
+              </button>
             </div>
-          ) : (
-            <>
-              <div className="w-12 h-12 rounded-2xl bg-slate-800 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform shadow-lg">
-                <i className="fa-solid fa-plus text-slate-500 text-xl group-hover:text-pink-500"></i>
-              </div>
-              <span className="text-[8px] font-black text-slate-500 uppercase tracking-widest">Add Photos</span>
-            </>
-          )}
-        </label>
-      </div>
+          ))}
 
-      <div className="w-full max-w-xs mt-12 space-y-4 relative z-10">
-        <button 
-          onClick={handleSubmit}
-          disabled={!isReady}
-          className={`w-full py-5 rounded-[2rem] font-black text-sm uppercase tracking-[0.2em] text-white shadow-2xl transition-all ${
-            isReady 
-            ? 'shimmer-btn active:scale-95' 
-            : 'bg-slate-800 text-slate-600 cursor-not-allowed border border-white/5'
-          }`}
-        >
-          {isReady ? "Complete Profile ✨" : `Upload ${3 - photos.length} More`}
-        </button>
-        
-        <p className="text-[9px] font-black text-slate-600 text-center uppercase tracking-widest px-4 leading-relaxed">
-          Photos marked as <span className="text-pink-500">Private</span> are only visible to matches you grant access to in your Vault.
-        </p>
-      </div>
+          {/* Upload Button */}
+          <label className="aspect-square bg-slate-900/40 border-2 border-dashed border-white/10 rounded-2xl flex flex-col items-center justify-center cursor-pointer hover:border-pink-500/50 transition-all group shadow-inner relative overflow-hidden">
+            <input type="file" multiple onChange={handleFileSelect} className="hidden" accept="image/*" />
+            <i className="fa-solid fa-plus text-slate-500 text-xl group-hover:text-pink-500 group-hover:scale-110 transition-transform"></i>
+          </label>
+        </div>
 
-      <div className="absolute bottom-6 opacity-10 flex gap-8 items-center text-slate-400 pointer-events-none">
-        <i className="fa-solid fa-images text-xl"></i>
-        <i className="fa-solid fa-wand-magic-sparkles text-xl"></i>
-        <i className="fa-solid fa-fingerprint text-xl"></i>
+        {/* Progress Tracker */}
+        <div className="flex items-center justify-between px-2">
+           <div className="flex gap-1.5">
+              {[...Array(5)].map((_, i) => (
+                <div key={i} className={`h-1.5 rounded-full transition-all duration-500 ${i < photos.length ? 'w-6 bg-pink-500' : 'w-3 bg-slate-800'}`}></div>
+              ))}
+           </div>
+           <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">
+              {photos.length}/5 Minimum
+           </span>
+        </div>
+
+        {/* Submit Button */}
+        <div className="pt-8 space-y-4">
+          <button 
+            onClick={handleSubmit}
+            disabled={!isReady || uploading}
+            className={`w-full py-6 rounded-[2.5rem] font-black text-sm uppercase tracking-[0.3em] text-white shadow-2xl transition-all ${
+              isReady && !uploading
+              ? 'shimmer-btn active:scale-95 shadow-pink-500/30' 
+              : 'bg-slate-900 text-slate-600 cursor-not-allowed border border-white/5 opacity-50'
+            }`}
+          >
+            {uploading ? "Encrypting Assets..." : isReady ? "Launch Profile ✨" : "Add More Photos"}
+          </button>
+          
+          <p className="text-[8px] font-black text-slate-600 text-center uppercase tracking-[0.3em] px-4 leading-relaxed italic">
+            All media is end-to-end encrypted in your <span className="text-white">secure vault</span>.
+          </p>
+        </div>
       </div>
     </div>
   );

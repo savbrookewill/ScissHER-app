@@ -1,4 +1,3 @@
-
 import React from 'react';
 
 interface PremiumUpgradeModalProps {
@@ -47,7 +46,7 @@ const PremiumUpgradeModal: React.FC<PremiumUpgradeModalProps> = ({ onClose }) =>
 
           <div className="space-y-3 pt-4">
             <button className="w-full py-5 shimmer-btn text-white rounded-[2rem] font-black text-xs uppercase tracking-[0.2em] shadow-2xl active:scale-95 transition-all">
-              Unlock For $19.99/mo
+              Unlock For $9.99/mo
             </button>
             <p className="text-[8px] text-slate-600 font-bold uppercase tracking-widest text-center">
               Renews automatically. Cancel anytime in Apple Settings.

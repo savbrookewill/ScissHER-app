@@ -16,14 +16,14 @@ const GlintsView: React.FC<GlintsViewProps> = ({ likedUsers, onUpgrade }) => {
 
   const handleSeshSubmit = (day: string, slot: string, note: string) => {
     setSeshRequestUser(null);
-    alert(`Glint reflected! 💎 Sesh request on its way.`);
+    alert(`Spark reflected! 💎 Sesh request on its way.`);
   };
 
   return (
     <div className="space-y-6 pb-20">
       <div className="flex items-center justify-between px-2">
-        <h2 className="text-3xl font-black tracking-tighter shimmer-text">Prism Garden</h2>
-        <span className="text-pink-500 text-[10px] font-black uppercase tracking-[0.2em]">{likedUsers.length} GLINTS REFLECTED</span>
+        <h2 className="text-3xl font-black tracking-tighter shimmer-text">Prism Network</h2>
+        <span className="text-pink-500 text-[10px] font-black uppercase tracking-[0.2em]">{likedUsers.length} SPARKS REFLECTED</span>
       </div>
 
       <div className="grid grid-cols-2 gap-4">
@@ -75,7 +75,7 @@ const GlintsView: React.FC<GlintsViewProps> = ({ likedUsers, onUpgrade }) => {
         </div>
         <div className="relative z-10">
           <h3 className="font-black text-2xl tracking-tight shimmer-text">Full Spectrum</h3>
-          <p className="text-xs text-slate-500 font-medium leading-relaxed px-4">Stop guessing who's catching your light. Reveal every Glint before you even swipe.</p>
+          <p className="text-xs text-slate-500 font-medium leading-relaxed px-4">Stop guessing who's catching your light. Reveal every Spark before you even swipe.</p>
         </div>
         <button onClick={onUpgrade} className="w-full py-4 shimmer-btn rounded-2xl font-black text-sm uppercase tracking-[0.2em] text-white shadow-xl shadow-purple-600/20 active:scale-95 transition-all relative z-10">Ascend to Premium</button>
       </div>
@@ -84,8 +84,7 @@ const GlintsView: React.FC<GlintsViewProps> = ({ likedUsers, onUpgrade }) => {
         <UserProfileModal 
           user={selectedUser} 
           onClose={() => setSelectedUser(null)} 
-          // Fix: Used 'onSendPetal' instead of non-existent 'onSendGlint' to match UserProfileModalProps
-          onSendPetal={() => alert("Glint reflected! 💎")}
+          onSendPetal={() => alert("Spark sent! 💎")}
         />
       )}
 

@@ -52,7 +52,7 @@ export const MOCK_USERS: User[] = [
     id: 'u2',
     name: 'Elena',
     age: 27,
-    bio: 'Software engineer who spends too much time at the climbing gym. Let’s skip the small talk and go on a scissHER sesh? I value efficiency and depth.',
+    bio: 'Software engineer who spends too much time at the climbing gym. Let’s skip the small talk and go on a ScissHER sesh? I value efficiency and depth.',
     location: 'Manhattan, NY',
     distance: '5 miles away',
     interests: [

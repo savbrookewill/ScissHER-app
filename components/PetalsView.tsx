@@ -4,7 +4,7 @@ import { MOCK_USERS } from '../constants';
 import UserProfileModal from './UserProfileModal';
 import SeshRequestModal from './SeshRequestModal';
 import { User } from '../types';
-import { RoseIcon } from './Header';
+import { SunflowerIcon } from './Header';
 
 interface PetalsViewProps {
   likedUsers: string[];
@@ -17,14 +17,14 @@ const PetalsView: React.FC<PetalsViewProps> = ({ likedUsers, onUpgrade }) => {
 
   const handleSeshSubmit = (day: string, slot: string, note: string) => {
     setSeshRequestUser(null);
-    alert(`Stemming a connection! 🌹 Sesh request planted.`);
+    alert(`Intentional request sent! 🌻 Your sesh is being scheduled.`);
   };
 
   return (
     <div className="space-y-6 pb-20">
       <div className="flex items-center justify-between px-2">
-        <h2 className="text-3xl font-black tracking-tighter shimmer-text">Electric Garden</h2>
-        <span className="text-pink-500 text-[10px] font-black uppercase tracking-[0.2em]">{likedUsers.length} PETALS SENT</span>
+        <h2 className="text-3xl font-black tracking-tighter shimmer-text">Spark Intel</h2>
+        <span className="text-yellow-500 text-[10px] font-black uppercase tracking-[0.2em]">{likedUsers.length} SPARKS SENT</span>
       </div>
 
       <div className="grid grid-cols-2 gap-4">
@@ -39,7 +39,7 @@ const PetalsView: React.FC<PetalsViewProps> = ({ likedUsers, onUpgrade }) => {
             
             <div className="absolute top-4 left-4 flex gap-1">
                <div className="w-8 h-8 petal-gradient rounded-xl flex items-center justify-center shadow-lg border border-white/20">
-                 <RoseIcon className="w-5 h-5" color="white" />
+                 <SunflowerIcon className="w-5 h-5" color="white" />
                </div>
             </div>
 
@@ -70,22 +70,22 @@ const PetalsView: React.FC<PetalsViewProps> = ({ likedUsers, onUpgrade }) => {
       </div>
       
       <div className="bg-gradient-to-br from-slate-900 to-slate-950 border border-white/5 p-8 rounded-[3rem] text-center space-y-5 shadow-2xl relative overflow-hidden group">
-        <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-purple-500/10 blur-[60px] rounded-full group-hover:bg-purple-500/20 transition-all"></div>
-        <div className="w-14 h-14 bg-purple-500/20 rounded-[1.5rem] mx-auto flex items-center justify-center text-purple-400 shadow-xl border border-purple-500/20 relative z-10">
-           <RoseIcon className="w-8 h-8 text-purple-400" />
+        <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-yellow-500/10 blur-[60px] rounded-full group-hover:bg-yellow-500/20 transition-all duration-700"></div>
+        <div className="w-14 h-14 bg-yellow-500/20 rounded-[1.5rem] mx-auto flex items-center justify-center text-yellow-400 shadow-xl border border-yellow-500/20 relative z-10">
+           <SunflowerIcon className="w-8 h-8 text-yellow-400" />
         </div>
         <div className="relative z-10">
-          <h3 className="font-black text-2xl tracking-tight shimmer-text">Full Bloom</h3>
-          <p className="text-xs text-slate-500 font-medium leading-relaxed px-4">Stop guessing who's catching your scent. Reveal every Petal before you even swipe.</p>
+          <h3 className="font-black text-2xl tracking-tight shimmer-text">Premium Intel</h3>
+          <p className="text-xs text-slate-500 font-medium leading-relaxed px-4">Stop guessing who's caught your light. Reveal every match before you even swipe.</p>
         </div>
-        <button onClick={onUpgrade} className="w-full py-4 shimmer-btn rounded-2xl font-black text-sm uppercase tracking-[0.2em] text-white shadow-xl shadow-purple-600/20 active:scale-95 transition-all relative z-10">Ascend to Premium</button>
+        <button onClick={onUpgrade} className="w-full py-4 shimmer-btn rounded-2xl font-black text-sm uppercase tracking-[0.2em] text-white shadow-xl shadow-yellow-600/20 active:scale-95 transition-all relative z-10">Ascend to Premium</button>
       </div>
 
       {selectedUser && (
         <UserProfileModal 
           user={selectedUser} 
           onClose={() => setSelectedUser(null)} 
-          onSendPetal={() => alert("Petal sent! 🌹")}
+          onSendPetal={() => alert("Spark sent! 🌻")}
         />
       )}
 

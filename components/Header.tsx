@@ -13,9 +13,30 @@ export const NormalScissorsIcon = ({ className = "w-6 h-6", color = "currentColo
 
 export const RoseIcon = ({ className = "w-6 h-6", color = "currentColor" }: { className?: string, color?: string }) => (
   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-    <path d="M12 4C9.5 4 7 6 7 9C7 11.5 9 13.5 12 16C15 13.5 17 11.5 17 9C17 6 14.5 4 12 4Z" fill={color} stroke={color} strokeWidth="1.5"/>
-    <path d="M12 7C11 7 10 7.5 10 8.5C10 9.5 11 10 12 11" stroke="white" strokeWidth="1" strokeLinecap="round" opacity="0.5"/>
-    <path d="M12 16V21M12 21L9 19M12 21L15 19" stroke={color} strokeWidth="1.5" strokeLinecap="round"/>
+    <path 
+      d="M12 16.5C14.5 14 18 11.5 18 8C18 5 15.5 3 12 3C8.5 3 6 5 6 8C6 11.5 9.5 14 12 16.5Z" 
+      fill={color} 
+      fillOpacity="0.2"
+    />
+    <path 
+      d="M12 16.5C13.5 15 16.5 13 16.5 8.5C16.5 6 14.5 4.5 12 4.5C9.5 4.5 7.5 6 7.5 8.5C7.5 13 10.5 15 12 16.5Z" 
+      fill={color}
+    />
+    <path d="M12 16.5V22" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
+  </svg>
+);
+
+// Fix: Added missing SunflowerIcon export required by PetalsView component
+export const SunflowerIcon = ({ className = "w-6 h-6", color = "currentColor" }: { className?: string, color?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <circle cx="12" cy="12" r="3" fill={color} />
+    <path 
+      d="M12 7c.5-2 2.5-3.5 4.5-3s3 2.5 2.5 4.5c2 .5 3.5 2.5 3 4.5s-2.5 3-4.5 2.5c-.5 2-2.5 3.5-4.5 3s-3-2.5-2.5-4.5c-2-.5-3.5-2.5-3-4.5s2.5-3 4.5-2.5z" 
+      stroke={color} 
+      strokeWidth="1.5"
+      fill={color}
+      fillOpacity="0.2"
+    />
   </svg>
 );
 
@@ -37,7 +58,7 @@ const Header: React.FC = () => {
 
         <div className="flex flex-col ml-1">
           <h1 className="text-xl font-black tracking-tight leading-none flex items-center gap-1">
-            <span className="shimmer-text uppercase">ScissHER</span>
+            <span className="shimmer-text">ScissHER</span>
             <i className="fa-solid fa-sparkles text-[10px] text-pink-400"></i>
           </h1>
           <span className="text-[7px] font-black text-slate-500 uppercase tracking-[0.3em] mt-1">

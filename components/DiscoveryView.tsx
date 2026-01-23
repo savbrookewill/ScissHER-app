@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { MOCK_USERS } from '../constants';
 import UserProfileModal from './UserProfileModal';
-import { RoseIcon } from './Header';
 
 const DiscoveryView: React.FC<{ onLike: (id: string) => void }> = ({ onLike }) => {
   const [idx, setIdx] = useState(0);
@@ -51,11 +50,10 @@ const DiscoveryView: React.FC<{ onLike: (id: string) => void }> = ({ onLike }) =
           
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent opacity-95 pointer-events-none"></div>
           
-          {/* Compatibility Bloom */}
           <div className="absolute top-8 right-8 z-10">
             <div className="bg-white/10 backdrop-blur-xl border border-white/20 px-4 py-2 rounded-2xl flex items-center gap-2 shadow-2xl animate-in slide-in-from-right-10">
                <div className="w-2 h-2 rounded-full bg-pink-500 animate-pulse"></div>
-               <span className="text-[8px] font-black uppercase tracking-widest text-white">Full Bloom Connection</span>
+               <span className="text-[8px] font-black uppercase tracking-widest text-white">Verified Connection</span>
             </div>
           </div>
 
@@ -94,34 +92,22 @@ const DiscoveryView: React.FC<{ onLike: (id: string) => void }> = ({ onLike }) =
             </button>
             
             <button 
-              onClick={() => handleAction('like')}
-              className="w-20 h-20 petal-gradient rounded-full flex items-center justify-center text-white shadow-[0_10px_30px_rgba(255,0,128,0.5)] active:scale-90 transition-all border-4 border-white/20"
+              onClick={() => setShowProfile(true)}
+              className="w-20 h-20 glass rounded-full flex items-center justify-center text-white border border-white/10 hover:border-purple-500/30 hover:text-white transition-all active:scale-90 shadow-2xl"
             >
-              <RoseIcon className="w-10 h-10" color="white" />
+              <i className="fa-solid fa-user text-3xl"></i>
             </button>
 
             <button 
-              onClick={() => setShowProfile(true)}
-              className="w-16 h-16 glass rounded-full flex items-center justify-center text-white border border-white/10 hover:border-purple-500/30 hover:text-white transition-all active:scale-90 shadow-2xl"
+              onClick={() => handleAction('like')}
+              className="w-16 h-16 petal-gradient rounded-full flex items-center justify-center text-white shadow-[0_10px_30px_rgba(255,0,128,0.5)] active:scale-90 transition-all border-2 border-white/20"
             >
-              <i className="fa-solid fa-user-astronaut text-2xl"></i>
+              <i className="fa-solid fa-bolt-lightning text-2xl"></i>
             </button>
           </div>
         </div>
 
         <div className="absolute inset-0 -z-10 translate-y-4 scale-95 opacity-40 rounded-[3.5rem] bg-slate-800 border border-white/5"></div>
-      </div>
-
-      <div className="bg-slate-900/40 p-6 rounded-[2.5rem] border border-white/5 flex items-center gap-5 mx-2 shadow-inner">
-        <div className="w-12 h-12 rounded-2xl bg-pink-500/10 flex items-center justify-center text-pink-500 border border-pink-500/20 shadow-lg shrink-0">
-          <i className="fa-solid fa-shield-halved text-lg"></i>
-        </div>
-        <div>
-          <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white">Security Verified Pool</p>
-          <p className="text-[10px] text-slate-500 mt-1 font-medium leading-relaxed">
-            Every petal in ScissHER is identity verified via Apple Secure ID.
-          </p>
-        </div>
       </div>
 
       {showProfile && (

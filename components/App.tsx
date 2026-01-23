@@ -10,7 +10,6 @@ import ProfileView from './components/ProfileView';
 import VaultView from './components/VaultView';
 import LiveView from './components/LiveView';
 import AgeVerification from './components/AgeVerification';
-import IdentityVerification from './components/IdentityVerification';
 import AuthView from './components/AuthView';
 import PhotoOnboarding from './components/PhotoOnboarding';
 import DailyHypeModal from './components/DailyHypeModal';
@@ -33,10 +32,6 @@ const App: React.FC = () => {
   };
 
   const handleVerifySuccess = () => {
-    setAuthState('identity');
-  };
-
-  const handleIdentityComplete = () => {
     setAuthState('onboarding');
   };
 
@@ -46,8 +41,7 @@ const App: React.FC = () => {
         ...currentUser,
         mainPhoto: publicPhotos[0] || currentUser.mainPhoto,
         publicPhotos: publicPhotos.slice(1),
-        privatePhotos: privatePhotos,
-        isVerified: true
+        privatePhotos: privatePhotos
       });
     }
     handleAuthorized();
@@ -59,10 +53,6 @@ const App: React.FC = () => {
 
   if (authState === 'verifying') {
     return <AgeVerification onVerify={handleVerifySuccess} />;
-  }
-
-  if (authState === 'identity') {
-    return <IdentityVerification onComplete={handleIdentityComplete} />;
   }
 
   if (authState === 'onboarding') {
@@ -88,7 +78,7 @@ const App: React.FC = () => {
       case 'live':
         return <LiveView />;
       case 'profile':
-        return <ProfileView user={currentUser} onReset={() => setAuthState('landing')} />;
+        return <ProfileView user={currentUser} />;
       case 'vault':
         return <VaultView user={currentUser} onGrantAccess={(id) => setPrivateAccessList(prev => [...prev, id])} />;
       default:

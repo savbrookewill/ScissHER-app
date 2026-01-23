@@ -28,7 +28,7 @@ const SeshRequestModal: React.FC<SeshRequestModalProps> = ({ user, onClose, onSu
               <i className="fa-solid fa-scissors"></i>
             </div>
             <div>
-              <h3 className="text-xl font-black">scissHER Sesh</h3>
+              <h3 className="text-xl font-black">ScissHER Sesh</h3>
               <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Request with {user.name}</p>
             </div>
           </div>
