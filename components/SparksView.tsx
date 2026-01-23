@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { MOCK_USERS } from '../constants';
 import UserProfileModal from './UserProfileModal';
@@ -59,7 +60,7 @@ const SparksView: React.FC<SparksViewProps> = ({ likedUsers, onUpgrade }) => {
                   onClick={() => setSelectedUser(user)}
                   className="w-full py-2 glass rounded-xl text-[9px] font-black uppercase tracking-wider hover:bg-white/10 transition-all border-white/10 text-slate-300"
                 >
-                  View Intel
+                  View Profile
                 </button>
               </div>
             </div>

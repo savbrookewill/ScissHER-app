@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { MOCK_USERS } from '../constants';
 import UserProfileModal from './UserProfileModal';
@@ -53,14 +52,14 @@ const GlintsView: React.FC<GlintsViewProps> = ({ likedUsers, onUpgrade }) => {
                   onClick={() => setSeshRequestUser(user)}
                   className="w-full py-2.5 shimmer-btn rounded-xl text-[9px] font-black uppercase tracking-[0.2em] text-white shadow-lg flex items-center justify-center gap-2 border border-white/10 active:scale-95 transition-all"
                 >
-                  <i className="fa-solid fa-calendar-star"></i>
-                  Book Sesh
+                  <i className="fa-solid fa-bolt"></i>
+                  Send a Sesh Request
                 </button>
                 <button 
                   onClick={() => setSelectedUser(user)}
                   className="w-full py-2 glass rounded-xl text-[9px] font-black uppercase tracking-wider hover:bg-white/10 transition-all border-white/10 text-slate-300"
                 >
-                  View Intel
+                  View Profile
                 </button>
               </div>
             </div>

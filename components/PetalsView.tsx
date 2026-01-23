@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { MOCK_USERS } from '../constants';
 import UserProfileModal from './UserProfileModal';
@@ -38,8 +37,8 @@ const PetalsView: React.FC<PetalsViewProps> = ({ likedUsers, onUpgrade }) => {
             <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 to-transparent"></div>
             
             <div className="absolute top-4 left-4 flex gap-1">
-               <div className="w-8 h-8 petal-gradient rounded-xl flex items-center justify-center shadow-lg border border-white/20">
-                 <SunflowerIcon className="w-5 h-5" color="white" />
+               <div className="w-8 h-8 bg-yellow-500 rounded-xl flex items-center justify-center shadow-lg border border-white/20">
+                  <SunflowerIcon className="w-5 h-5 text-white" />
                </div>
             </div>
 
@@ -52,16 +51,16 @@ const PetalsView: React.FC<PetalsViewProps> = ({ likedUsers, onUpgrade }) => {
               <div className="flex flex-col gap-2">
                 <button 
                   onClick={() => setSeshRequestUser(user)}
-                  className="w-full py-2.5 shimmer-btn rounded-xl text-[9px] font-black uppercase tracking-[0.2em] text-white shadow-lg flex items-center justify-center gap-2 border border-white/10 active:scale-95 transition-all"
+                  className="w-full py-2.5 bg-yellow-600 rounded-xl text-[9px] font-black uppercase tracking-[0.2em] text-white shadow-lg flex items-center justify-center gap-2 border border-white/10 active:scale-95 transition-all"
                 >
-                  <i className="fa-solid fa-calendar-star"></i>
-                  Book Sesh
+                  <i className="fa-solid fa-bolt"></i>
+                  Send a Sesh Request
                 </button>
                 <button 
                   onClick={() => setSelectedUser(user)}
                   className="w-full py-2 glass rounded-xl text-[9px] font-black uppercase tracking-wider hover:bg-white/10 transition-all border-white/10 text-slate-300"
                 >
-                  View Intel
+                  View Profile
                 </button>
               </div>
             </div>
@@ -70,22 +69,22 @@ const PetalsView: React.FC<PetalsViewProps> = ({ likedUsers, onUpgrade }) => {
       </div>
       
       <div className="bg-gradient-to-br from-slate-900 to-slate-950 border border-white/5 p-8 rounded-[3rem] text-center space-y-5 shadow-2xl relative overflow-hidden group">
-        <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-yellow-500/10 blur-[60px] rounded-full group-hover:bg-yellow-500/20 transition-all duration-700"></div>
+        <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-yellow-500/10 blur-[60px] rounded-full group-hover:bg-yellow-500/20 transition-all"></div>
         <div className="w-14 h-14 bg-yellow-500/20 rounded-[1.5rem] mx-auto flex items-center justify-center text-yellow-400 shadow-xl border border-yellow-500/20 relative z-10">
-           <SunflowerIcon className="w-8 h-8 text-yellow-400" />
+           <SunflowerIcon className="w-8 h-8" />
         </div>
         <div className="relative z-10">
-          <h3 className="font-black text-2xl tracking-tight shimmer-text">Premium Intel</h3>
-          <p className="text-xs text-slate-500 font-medium leading-relaxed px-4">Stop guessing who's caught your light. Reveal every match before you even swipe.</p>
+          <h3 className="font-black text-2xl tracking-tight text-white">Golden Horizon</h3>
+          <p className="text-xs text-slate-500 font-medium leading-relaxed px-4">See who is blooming for you. Access premium intel to make smarter connections.</p>
         </div>
-        <button onClick={onUpgrade} className="w-full py-4 shimmer-btn rounded-2xl font-black text-sm uppercase tracking-[0.2em] text-white shadow-xl shadow-yellow-600/20 active:scale-95 transition-all relative z-10">Ascend to Premium</button>
+        <button onClick={onUpgrade} className="w-full py-4 bg-yellow-600 rounded-2xl font-black text-sm uppercase tracking-[0.2em] text-white shadow-xl shadow-yellow-600/20 active:scale-95 transition-all relative z-10">Expand Your Garden</button>
       </div>
 
       {selectedUser && (
         <UserProfileModal 
           user={selectedUser} 
           onClose={() => setSelectedUser(null)} 
-          onSendPetal={() => alert("Spark sent! 🌻")}
+          onSendPetal={() => alert("Interest noted! 🌻")}
         />
       )}
 
