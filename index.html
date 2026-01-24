@@ -7,40 +7,59 @@
   <title>ScissHER | Intentional Connection</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;400;600;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --emerald: #10b981;
+      --indigo: #6366f1;
+      --violet: #8b5cf6;
+      --obsidian: #020617;
+    }
+
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      background-color: #020617;
+      background-color: var(--obsidian);
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(16, 185, 129, 0.15) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+        radial-gradient(at 50% 100%, rgba(139, 92, 246, 0.1) 0px, transparent 50%);
       color: #f8fafc;
       overflow-x: hidden;
+      min-height: 100vh;
     }
     
     .glass {
-      background: rgba(15, 23, 42, 0.7);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid rgba(255, 255, 255, 0.05);
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
     
-    /* NEW PRISMATIC THEME: Emerald, Teal, and Deep Indigo */
     .petal-gradient {
-      background: linear-gradient(135deg, #10b981 0%, #6366f1 100%);
+      background: linear-gradient(135deg, #10b981 0%, #6366f1 50%, #8b5cf6 100%);
+      background-size: 200% 200%;
+      animation: gradient-shift 8s ease infinite;
+    }
+
+    @keyframes gradient-shift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
     .shimmer-text {
-      background: linear-gradient(90deg, #10b981, #6366f1, #06b6d4, #10b981);
+      background: linear-gradient(90deg, #10b981, #6366f1, #c084fc, #10b981);
       background-size: 200% auto;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      animation: shimmer 3s linear infinite;
+      animation: shimmer 4s linear infinite;
     }
 
     .shimmer-btn {
-      background: linear-gradient(90deg, #10b981, #6366f1, #06b6d4, #10b981);
+      background: linear-gradient(90deg, #10b981, #6366f1, #8b5cf6, #10b981);
       background-size: 200% auto;
-      transition: 0.5s;
-      animation: shimmer 3s linear infinite;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      animation: shimmer 4s linear infinite;
     }
 
     @keyframes shimmer {
@@ -50,16 +69,29 @@
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-    @keyframes spin-slow {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
+    .squircle {
+      border-radius: 3rem;
+      mask-image: paint(squircle); /* Conceptually smooth corners */
     }
-    .animate-spin-slow { animation: spin-slow 8s linear infinite; }
 
-    /* Custom mask for fade effects */
-    .mask-gradient-b {
-      mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
-      -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+    /* Floating Glitter Particles */
+    .star-bit {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      border-radius: 50%;
+      filter: blur(1px);
+      pointer-events: none;
+    }
+
+    @keyframes float-around {
+      0%, 100% { transform: translate(0, 0) scale(1); opacity: 0.3; }
+      50% { transform: translate(10px, -10px) scale(1.5); opacity: 0.8; }
+    }
+
+    .animate-float {
+      animation: float-around 3s ease-in-out infinite;
     }
   </style>
 <script type="importmap">

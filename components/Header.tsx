@@ -26,7 +26,6 @@ export const RoseIcon = ({ className = "w-6 h-6", color = "currentColor" }: { cl
   </svg>
 );
 
-// Added SunflowerIcon to resolve missing export error in PetalsView
 export const SunflowerIcon = ({ className = "w-6 h-6", color = "currentColor" }: { className?: string, color?: string }) => (
   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
     <circle cx="12" cy="12" r="3" fill={color} />
@@ -39,6 +38,27 @@ export const SunflowerIcon = ({ className = "w-6 h-6", color = "currentColor" }:
     <path d="M14.8284 9.17157C14.8284 9.17157 17.6569 6.34315 18.364 7.05025C19.0711 7.75736 16.2426 9.17157 14.8284 9.17157Z" fill={color} />
     <path d="M9.17157 14.8284C9.17157 14.8284 6.34315 17.6569 5.63604 16.9497C4.92893 16.2426 7.75736 14.8284 9.17157 14.8284Z" fill={color} />
   </svg>
+);
+
+export const FullConnectionIcon = ({ className = "w-12 h-12", color = "#10b981" }: { className?: string, color?: string }) => (
+  <div className={`relative ${className} flex items-center justify-center`}>
+    {/* Concentric Connection Rings */}
+    <div className="absolute inset-0 rounded-full border border-current opacity-10 animate-ping"></div>
+    <div className="absolute inset-2 rounded-full border border-current opacity-20 animate-pulse"></div>
+    
+    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full drop-shadow-[0_0_12px_rgba(16,185,129,0.5)]">
+      {/* Interlocking Circles (Venn Diagram style) */}
+      <circle cx="40" cy="50" r="25" stroke={color} strokeWidth="2" strokeDasharray="4 4" className="opacity-40" />
+      <circle cx="60" cy="50" r="25" stroke={color} strokeWidth="2" strokeDasharray="4 4" className="opacity-40" />
+      
+      {/* Central Sparkle */}
+      <path d="M50 30L55 45L70 50L55 55L50 70L45 55L30 50L45 45L50 30Z" fill={color} className="animate-pulse" />
+      
+      {/* Tiny Orbiting Hearts */}
+      <path d="M75 35c-1-1-2.5-1-3.5 0l-.5.5-.5-.5c-1-1-2.5-1-3.5 0s-1 2.5 0 3.5l4 4 4-4c1-1 1-2.5 0-3.5z" fill="#8b5cf6" className="animate-bounce" />
+      <path d="M25 65c-1-1-2.5-1-3.5 0l-.5.5-.5-.5c-1-1-2.5-1-3.5 0s-1 2.5 0 3.5l4 4 4-4c1-1 1-2.5 0-3.5z" fill="#10b981" className="animate-bounce" style={{animationDelay: '0.5s'}} />
+    </svg>
+  </div>
 );
 
 const TinyHeart = ({ className = "w-2 h-2", color = "#10b981" }: { className?: string, color?: string }) => (
@@ -63,50 +83,46 @@ const Header: React.FC = () => {
   return (
     <header className="px-6 py-5 flex items-center justify-between sticky top-0 z-50 glass border-b border-white/5 overflow-hidden">
       <div className="flex items-center gap-5 relative">
-        {/* Glitter Particles */}
-        <div className="absolute -top-2 -left-2 w-1 h-1 bg-emerald-400 rounded-full animate-pulse blur-[1px]"></div>
-        <div className="absolute top-4 -right-2 w-1.5 h-1.5 bg-indigo-400 rounded-full animate-bounce blur-[1px] delay-300"></div>
-        <div className="absolute -bottom-1 left-4 w-1 h-1 bg-cyan-300 rounded-full animate-pulse blur-[1px] delay-700"></div>
+        {/* Luminous Star-bits */}
+        <div className="star-bit animate-float" style={{ top: '-10px', left: '0px' }}></div>
+        <div className="star-bit animate-float" style={{ top: '20px', right: '-10px', animationDelay: '1s' }}></div>
+        <div className="star-bit animate-float" style={{ bottom: '-5px', left: '20px', animationDelay: '2s' }}></div>
 
         <div className="relative group">
-          {/* Orbiting Hearts */}
-          <div className="absolute -top-1.5 -left-1.5 animate-bounce">
-            <TinyHeart className="w-3 h-3 drop-shadow-[0_0_5px_#10b981]" color="#10b981" />
+          {/* Orbiting Hearts with Squishy Motion */}
+          <div className="absolute -top-2 -left-2 animate-bounce transition-transform duration-1000 group-hover:scale-150">
+            <TinyHeart className="w-3.5 h-3.5 drop-shadow-[0_0_8px_#10b981]" color="#10b981" />
           </div>
-          <div className="absolute -bottom-1.5 -right-1.5 animate-bounce delay-150">
-            <TinyHeart className="w-3 h-3 drop-shadow-[0_0_5px_#6366f1]" color="#6366f1" />
-          </div>
-          <div className="absolute -top-1.5 -right-1.5 animate-pulse delay-500">
-            <TinyHeart className="w-2.5 h-2.5 drop-shadow-[0_0_3px_#06b6d4]" color="#06b6d4" />
+          <div className="absolute -bottom-2 -right-2 animate-bounce delay-300 transition-transform duration-1000 group-hover:scale-150">
+            <TinyHeart className="w-3.5 h-3.5 drop-shadow-[0_0_8px_#8b5cf6]" color="#8b5cf6" />
           </div>
 
-          {/* Logo Square Container */}
-          <div className="w-12 h-12 bg-slate-900 rounded-2xl flex items-center justify-center text-white shadow-[0_0_30px_rgba(16,185,129,0.3)] group-hover:shadow-[0_0_40px_rgba(16,185,129,0.5)] transition-all duration-700 border border-emerald-500/30 overflow-hidden relative">
-            <div className="absolute inset-0 petal-gradient opacity-20 group-hover:opacity-40 transition-opacity"></div>
-            <NormalScissorsIcon className="w-7 h-7 relative z-10 drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]" color="white" />
+          {/* Squircle Logo Container */}
+          <div className="w-14 h-14 bg-slate-900 rounded-[1.25rem] flex items-center justify-center text-white shadow-[0_15px_35px_rgba(16,185,129,0.25)] group-hover:shadow-[0_20px_45px_rgba(16,185,129,0.4)] transition-all duration-500 border border-white/10 overflow-hidden relative active:scale-90">
+            <div className="absolute inset-0 petal-gradient opacity-10 group-hover:opacity-30 transition-opacity"></div>
+            <NormalScissorsIcon className="w-8 h-8 relative z-10 drop-shadow-[0_0_12px_rgba(255,255,255,0.4)]" color="white" />
           </div>
         </div>
 
-        <div className="flex flex-col ml-1">
-          <h1 className="text-xl font-black tracking-tight leading-none flex items-center gap-1">
+        <div className="flex flex-col">
+          <h1 className="text-2xl font-black tracking-tighter leading-none flex items-center gap-1.5">
             <span className="shimmer-text">ScissHER</span>
-            <span className="flex gap-0.5">
-               <i className="fa-solid fa-sparkles text-[8px] text-emerald-400 animate-pulse"></i>
-               <i className="fa-solid fa-sparkle text-[6px] text-indigo-400 animate-pulse delay-300"></i>
+            <span className="flex gap-1">
+               <i className="fa-solid fa-sparkles text-[10px] text-emerald-400 animate-pulse"></i>
             </span>
           </h1>
-          <span className="text-[7px] font-black text-slate-500 uppercase tracking-[0.3em] mt-1">
+          <span className="text-[8px] font-bold text-slate-500 uppercase tracking-[0.4em] mt-1.5 opacity-60">
             Interact With Intention
           </span>
         </div>
       </div>
       
-      <div className="flex gap-3 text-slate-400">
-        <button className="w-10 h-10 rounded-2xl bg-slate-900/50 border border-white/5 flex items-center justify-center hover:text-emerald-400 transition-all shadow-lg active:scale-90">
-          <i className="fa-regular fa-bell text-lg"></i>
+      <div className="flex gap-3">
+        <button className="w-11 h-11 rounded-2xl glass flex items-center justify-center text-slate-400 hover:text-emerald-400 transition-all hover:border-emerald-500/30 active:scale-90 group">
+          <i className="fa-regular fa-bell text-lg group-hover:rotate-12 transition-transform"></i>
         </button>
-        <button className="w-10 h-10 rounded-2xl bg-slate-900/50 border border-white/5 flex items-center justify-center hover:text-indigo-400 transition-all shadow-lg active:scale-90">
-          <i className="fa-solid fa-sliders text-lg"></i>
+        <button className="w-11 h-11 rounded-2xl glass flex items-center justify-center text-slate-400 hover:text-violet-400 transition-all hover:border-violet-500/30 active:scale-90 group">
+          <i className="fa-solid fa-sliders text-lg group-hover:rotate-[-12deg] transition-transform"></i>
         </button>
       </div>
     </header>
