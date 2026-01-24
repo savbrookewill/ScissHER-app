@@ -33,17 +33,26 @@ const LiveView: React.FC = () => {
   const handleAiSuggest = async () => {
     setIsAiLoading(true);
     try {
+      // Launch-ready check: Ensure API key is present
+      if (!process.env.API_KEY) {
+        throw new Error("Missing Scene Intelligence Key");
+      }
+      
       const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
-        contents: "Suggest a safe, intentional, and inclusive conversation starter for a lesbian live stream in NYC focusing on community and nightlife.",
+        contents: "Suggest a short, 1-sentence catchy and intentional conversation starter for a lesbian live stream focusing on community and nightlife in a metropolitan city.",
         config: {
-          systemInstruction: "You are a safety-first moderator and community builder for a lesbian dating app. Ensure suggestions are respectful and avoid any prohibited content."
+          systemInstruction: "You are ScissHER's AI scene moderator. Your suggestions are modern, sleek, and focused on intentional community building."
         }
       });
-      alert(`Gemini Suggests: "${response.text}"`);
+      
+      const text = response.text || "Ask the room: What intentional moment defined your day?";
+      setStreamTitle(text.replace(/"/g, ''));
     } catch (err) {
       console.error(err);
+      // Fallback for launch stability
+      setStreamTitle("Let's talk about the intentional energy in the city tonight.");
     } finally {
       setIsAiLoading(false);
     }
@@ -59,6 +68,8 @@ const LiveView: React.FC = () => {
       setMediaStream(stream);
       setShowSafetyAgreement(false);
       setIsBroadcasting(true);
+      // Kick off an AI suggestion to get them started
+      handleAiSuggest();
     } catch (err) {
       alert("Camera and Mic access are required to host a Sesh.");
     }
@@ -96,50 +107,50 @@ const LiveView: React.FC = () => {
   if (isBroadcasting) {
     return (
       <div className="fixed inset-0 z-[200] bg-slate-950 flex flex-col animate-in fade-in duration-500">
-        <video ref={videoRef} autoPlay muted playsInline className="absolute inset-0 w-full h-full object-cover grayscale-[0.2] brightness-110" />
+        <video ref={videoRef} autoPlay muted playsInline className="absolute inset-0 w-full h-full object-cover grayscale-[0.2] brightness-110 transition-all" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40"></div>
         
         <div className="relative z-10 p-8 flex flex-col h-full justify-between">
           <div className="flex justify-between items-start">
-            <div className="space-y-2">
-              <div className="bg-emerald-600 px-4 py-1.5 rounded-full flex items-center gap-2 border border-white/20 shadow-xl animate-pulse w-fit">
-                <div className="w-2 h-2 rounded-full bg-white"></div>
+            <div className="space-y-3">
+              <div className="bg-emerald-600 px-5 py-2 rounded-full flex items-center gap-2.5 border border-white/20 shadow-[0_0_20px_rgba(16,185,129,0.4)] animate-pulse w-fit">
+                <div className="w-2.5 h-2.5 rounded-full bg-white"></div>
                 <span className="text-[10px] font-black uppercase tracking-widest text-white">Live Locally</span>
               </div>
-              <p className="text-white text-xl font-black italic tracking-tighter drop-shadow-lg">
-                {streamTitle || "Unnamed Sesh..."}
-              </p>
+              <h2 className="text-white text-2xl font-black italic tracking-tighter drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)] leading-tight max-w-[250px]">
+                {streamTitle || "Curating Your Energy..."}
+              </h2>
             </div>
-            <button onClick={endBroadcast} className="w-12 h-12 bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl flex items-center justify-center text-white">
-              <i className="fa-solid fa-xmark"></i>
+            <button onClick={endBroadcast} className="w-14 h-14 bg-white/10 backdrop-blur-xl border border-white/20 rounded-[1.5rem] flex items-center justify-center text-white active:scale-90 transition-all">
+              <i className="fa-solid fa-xmark text-lg"></i>
             </button>
           </div>
 
           <div className="space-y-6">
             <div className="flex gap-4 items-center">
-               <div className="flex-1 bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2rem] p-4 flex items-center justify-between shadow-2xl">
+               <div className="flex-1 bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2.5rem] p-5 flex items-center justify-between shadow-2xl">
                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center text-emerald-500">
-                      <i className="fa-solid fa-eye text-xs"></i>
+                    <div className="w-10 h-10 rounded-2xl bg-emerald-500/20 flex items-center justify-center text-emerald-500">
+                      <i className="fa-solid fa-eye text-sm"></i>
                     </div>
-                    <span className="text-xs font-black text-white">428 Tuning In</span>
+                    <span className="text-[11px] font-black text-white tracking-widest uppercase">428 Tuning In</span>
                  </div>
-                 <div className="flex -space-x-2">
-                   {[1,2,3].map(i => <div key={i} className="w-6 h-6 rounded-full border border-slate-950 bg-slate-800"></div>)}
+                 <div className="flex -space-x-3">
+                   {[1,2,3,4].map(i => <div key={i} className="w-7 h-7 rounded-full border-2 border-slate-950 bg-slate-800 shadow-lg"></div>)}
                  </div>
                </div>
             </div>
             
-            <div className="grid grid-cols-2 gap-3">
-              <button className="py-4 bg-white text-black rounded-2xl font-black text-[10px] uppercase tracking-widest active:scale-95 transition-all shadow-xl">
-                 Invite Local Spark
+            <div className="grid grid-cols-2 gap-4">
+              <button className="py-5 bg-white text-black rounded-[1.75rem] font-black text-[10px] uppercase tracking-[0.3em] active:scale-95 transition-all shadow-2xl">
+                 Invite Sparks
               </button>
               <button 
                 onClick={handleAiSuggest}
                 disabled={isAiLoading}
-                className="py-4 bg-indigo-600 text-white rounded-2xl font-black text-[10px] uppercase tracking-widest active:scale-95 transition-all shadow-xl shadow-indigo-500/20 disabled:opacity-50"
+                className="py-5 bg-emerald-600/20 text-emerald-400 border border-emerald-500/20 rounded-[1.75rem] font-black text-[10px] uppercase tracking-[0.3em] active:scale-95 transition-all shadow-xl backdrop-blur-xl disabled:opacity-50"
               >
-                 {isAiLoading ? <i className="fa-solid fa-spinner animate-spin"></i> : "Gemini AI Suggest"}
+                 {isAiLoading ? <i className="fa-solid fa-sparkle animate-spin"></i> : "Vibe Reset AI"}
               </button>
             </div>
           </div>
@@ -150,15 +161,14 @@ const LiveView: React.FC = () => {
 
   if (activeStream) {
     return (
-      <div className="fixed inset-0 z-[200] bg-slate-950 flex flex-col animate-in slide-in-from-bottom duration-500 overflow-hidden">
-        <img src={activeStream.img} alt={activeStream.host} className="absolute inset-0 w-full h-full object-cover blur-[2px] scale-110 opacity-60" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/60"></div>
+      <div className="fixed inset-0 z-[200] bg-slate-950 flex flex-col animate-in slide-in-from-bottom duration-700 overflow-hidden">
+        <img src={activeStream.img} alt={activeStream.host} className="absolute inset-0 w-full h-full object-cover blur-[4px] scale-110 opacity-50 transition-all duration-1000" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-slate-950/60"></div>
         
-        {/* Floating Hearts Container */}
         <div className="absolute inset-0 pointer-events-none z-30">
           {hearts.map(h => (
-            <div key={h.id} className="absolute bottom-20 transition-all duration-2000 animate-out slide-out-to-top-[500px] fade-out" style={{ left: `${h.left}%` }}>
-              <RoseIcon className="w-8 h-8 text-emerald-400 drop-shadow-[0_0_10px_#10b981]" />
+            <div key={h.id} className="absolute bottom-32 transition-all duration-[2.5s] animate-out slide-out-to-top-[600px] fade-out" style={{ left: `${h.left}%` }}>
+              <RoseIcon className="w-10 h-10 text-emerald-400 drop-shadow-[0_0_15px_#10b981]" />
             </div>
           ))}
         </div>
@@ -166,65 +176,79 @@ const LiveView: React.FC = () => {
         <div className="relative z-10 p-8 flex flex-col h-full justify-between">
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-4">
-               <div className="w-12 h-12 rounded-2xl border-2 border-emerald-500 overflow-hidden shadow-2xl">
+               <div className="w-14 h-14 rounded-[1.5rem] border-2 border-emerald-500/50 overflow-hidden shadow-2xl">
                  <img src={`https://i.pravatar.cc/150?u=${activeStream.host}`} className="w-full h-full object-cover" />
                </div>
-               <div>
-                 <h4 className="font-black text-white text-lg leading-tight">{activeStream.host}</h4>
-                 <div className="flex items-center gap-2">
-                    <span className="text-emerald-500 text-[8px] font-black uppercase tracking-widest animate-pulse">LIVE</span>
-                    <span className="text-slate-400 text-[8px] font-bold uppercase tracking-widest">{activeStream.viewers} Watching</span>
+               <div className="space-y-0.5">
+                 <h4 className="font-black text-white text-xl tracking-tighter leading-tight italic">{activeStream.host}</h4>
+                 <div className="flex items-center gap-2.5">
+                    <span className="text-emerald-500 text-[8px] font-black uppercase tracking-[0.4em] animate-pulse">LIVE NOW</span>
+                    <span className="text-slate-500 text-[8px] font-black uppercase tracking-widest">{activeStream.viewers} Watching</span>
                  </div>
                </div>
             </div>
-            <div className="flex gap-2">
-              <button onClick={() => setShowReportStream(true)} className="w-10 h-10 bg-red-500/20 border border-red-500/20 rounded-xl flex items-center justify-center text-red-500">
+            <div className="flex gap-3">
+              <button onClick={() => setShowReportStream(true)} className="w-12 h-12 glass border border-red-500/10 rounded-2xl flex items-center justify-center text-red-500/60 hover:text-red-500 transition-colors">
                 <i className="fa-solid fa-flag text-xs"></i>
               </button>
-              <button onClick={() => setActiveStream(null)} className="w-10 h-10 bg-white/5 border border-white/10 rounded-xl flex items-center justify-center text-white">
-                <i className="fa-solid fa-xmark"></i>
+              <button onClick={() => setActiveStream(null)} className="w-12 h-12 glass border border-white/5 rounded-2xl flex items-center justify-center text-white/60 hover:text-white transition-colors">
+                <i className="fa-solid fa-xmark text-lg"></i>
               </button>
             </div>
           </div>
 
-          <div className="space-y-6">
-            <div className="space-y-4 max-h-[40vh] overflow-y-auto no-scrollbar mask-gradient-b">
-              {['Hey Zara! Local vibe is amazing tonight.', 'Bushwick represent! 🌈', 'What playlist is this?', 'Stunning energy! ✨'].map((msg, i) => (
-                <div key={i} className="flex gap-3 items-start animate-in slide-in-from-left duration-500" style={{ animationDelay: `${i * 100}ms` }}>
-                  <div className="w-6 h-6 rounded-lg bg-slate-800 shrink-0"></div>
-                  <p className="text-[11px] text-white/90 font-medium leading-tight">
-                    <span className="font-black text-emerald-500 mr-2 uppercase tracking-tighter">Member</span>
-                    {msg}
-                  </p>
+          <div className="space-y-8 pb-10">
+            <div className="space-y-5 max-h-[35vh] overflow-y-auto no-scrollbar mask-gradient-b px-2">
+              {[
+                { u: 'Elena', m: 'The energy in the West Village is unmatched!' },
+                { u: 'Sasha', m: 'Zara, your aesthetic today is everything. ✨' },
+                { u: 'Jordan', m: 'Anyone going to the speed dating event tonight?' },
+                { u: 'Maya', m: 'Sending intentional vibes from Brooklyn! 🌈' }
+              ].map((msg, i) => (
+                <div key={i} className="flex gap-4 items-start animate-in slide-in-from-left duration-700" style={{ animationDelay: `${i * 120}ms` }}>
+                  <div className="w-8 h-8 rounded-xl bg-slate-900 border border-white/5 shrink-0 flex items-center justify-center text-[8px] font-black text-emerald-400">
+                    {msg.u[0]}
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-[9px] font-black text-white/40 uppercase tracking-widest">{msg.u}</p>
+                    <p className="text-sm text-white/90 font-medium leading-relaxed drop-shadow-md">
+                      {msg.m}
+                    </p>
+                  </div>
                 </div>
               ))}
             </div>
 
-            <div className="flex gap-3 items-center">
-              <div className="flex-1 bg-white/5 backdrop-blur-xl border border-white/10 rounded-[2rem] px-6 py-4 flex items-center gap-3">
-                 <input type="text" placeholder="Say something intentional..." className="bg-transparent border-none text-[11px] text-white focus:outline-none w-full placeholder:text-slate-500" />
-                 <button className="text-emerald-500"><i className="fa-solid fa-paper-plane"></i></button>
+            <div className="flex gap-4 items-center">
+              <div className="flex-1 glass border border-white/10 rounded-[2.5rem] px-8 py-5 flex items-center gap-4 shadow-2xl">
+                 <input type="text" placeholder="Send intentional thought..." className="bg-transparent border-none text-sm text-white focus:outline-none w-full placeholder:text-slate-600 font-medium" />
+                 <button className="text-emerald-400 active:scale-125 transition-transform"><i className="fa-solid fa-paper-plane text-lg"></i></button>
               </div>
-              <button onClick={spawnHeart} className="w-14 h-14 petal-gradient rounded-full flex items-center justify-center text-white shadow-2xl active:scale-150 transition-transform">
-                <RoseIcon className="w-7 h-7" color="white" />
+              <button onClick={spawnHeart} className="w-16 h-16 petal-gradient rounded-full flex items-center justify-center text-white shadow-2xl active:scale-125 transition-transform border border-white/30">
+                <RoseIcon className="w-8 h-8" color="white" />
               </button>
             </div>
           </div>
         </div>
 
         {showReportStream && (
-          <div className="fixed inset-0 z-[250] bg-slate-950/95 flex items-center justify-center p-6 animate-in zoom-in duration-300">
-            <div className="w-full max-w-sm glass rounded-[3rem] p-8 space-y-6 border-red-500/20 border text-center">
-               <h3 className="text-xl font-black text-white">Report Content</h3>
-               <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Select a violation category</p>
-               <div className="grid grid-cols-1 gap-2">
-                 {['Harassment', 'Nudity/Inappropriate', 'Violence', 'Fake/Scam'].map(cat => (
-                   <button key={cat} onClick={handleReport} className="py-4 px-6 bg-slate-900 border border-white/5 rounded-2xl text-[10px] font-black uppercase tracking-widest text-slate-300 hover:border-red-500/50 hover:text-white transition-all">
+          <div className="fixed inset-0 z-[250] bg-slate-950/95 backdrop-blur-3xl flex items-center justify-center p-8 animate-in zoom-in duration-500">
+            <div className="w-full max-w-sm glass rounded-[4rem] p-10 space-y-8 border-red-500/20 border-2 text-center shadow-2xl">
+               <div className="w-20 h-20 bg-red-500/10 rounded-[2rem] flex items-center justify-center text-red-500 mx-auto border border-red-500/20">
+                  <i className="fa-solid fa-shield-exclamation text-3xl"></i>
+               </div>
+               <div className="space-y-2">
+                 <h3 className="text-2xl font-black text-white italic tracking-tighter">Content Flag</h3>
+                 <p className="text-[10px] text-slate-500 font-black uppercase tracking-[0.3em]">Maintain Our Safe Scene</p>
+               </div>
+               <div className="grid grid-cols-1 gap-3">
+                 {['Harassment', 'Inappropriate', 'Fake Account', 'Spam'].map(cat => (
+                   <button key={cat} onClick={handleReport} className="py-5 px-8 bg-slate-900 border border-white/5 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 hover:text-red-400 hover:border-red-500/30 transition-all active:scale-95">
                      {cat}
                    </button>
                  ))}
                </div>
-               <button onClick={() => setShowReportStream(false)} className="text-[10px] font-black uppercase tracking-widest text-slate-500">Cancel</button>
+               <button onClick={() => setShowReportStream(false)} className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-600 hover:text-white transition-colors pt-4">Dismiss</button>
             </div>
           </div>
         )}
@@ -233,119 +257,121 @@ const LiveView: React.FC = () => {
   }
 
   return (
-    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <div className="flex items-center justify-between px-2">
-        <div className="flex flex-col">
-          <h2 className="text-3xl font-black tracking-tighter shimmer-text leading-none">Local Live</h2>
-          <p className="text-[10px] font-black text-slate-500 uppercase tracking-widest mt-1">BROADCASTING TO YOUR CITY</p>
+    <div className="space-y-10 pb-40 animate-in fade-in slide-in-from-bottom-4 duration-700 px-2">
+      <div className="flex items-center justify-between px-3">
+        <div className="flex flex-col gap-1">
+          <h2 className="text-4xl font-black tracking-tighter shimmer-text italic leading-none">Local Live</h2>
+          <p className="text-[9px] font-black text-slate-500 uppercase tracking-[0.4em] opacity-60">Real-time Scene Intelligence</p>
         </div>
-        <button onClick={startBroadcast} className="w-14 h-14 shimmer-btn rounded-[1.5rem] flex items-center justify-center text-white shadow-xl shadow-emerald-500/20 active:scale-90 transition-all border border-white/10">
-          <i className="fa-solid fa-tower-broadcast text-xl"></i>
+        <button onClick={startBroadcast} className="w-16 h-16 shimmer-btn rounded-[2rem] flex items-center justify-center text-white shadow-2xl active:scale-90 transition-all border border-white/20 group">
+          <i className="fa-solid fa-tower-broadcast text-2xl group-hover:animate-pulse"></i>
         </button>
       </div>
 
-      <div className="space-y-4">
-        <h3 className="text-[9px] font-black text-slate-500 uppercase tracking-[0.3em] px-2 flex items-center gap-3">
-          <div className="flex gap-1 items-center bg-emerald-500/10 px-2 py-1 rounded-full border border-emerald-500/20">
-            <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
-            <span className="text-emerald-500">Active Locally</span>
+      <div className="space-y-8">
+        <h3 className="text-[10px] font-black text-slate-600 uppercase tracking-[0.5em] px-4 flex items-center gap-4">
+          <div className="flex gap-1.5 items-center bg-emerald-500/10 px-3 py-1.5 rounded-full border border-emerald-500/10">
+            <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_#10b981]"></div>
+            <span className="text-emerald-500 text-[8px] font-black">Active Scene</span>
           </div>
           Nearby Happenings
         </h3>
         
-        <div className="flex gap-5 overflow-x-auto pb-6 snap-x no-scrollbar px-2">
+        <div className="flex gap-6 overflow-x-auto pb-8 snap-x no-scrollbar px-3">
           {streams.map(stream => (
-            <div key={stream.id} onClick={() => setActiveStream(stream)} className="min-w-[280px] aspect-[9/16] rounded-[3rem] bg-slate-900 overflow-hidden relative snap-center border border-white/5 shadow-2xl group cursor-pointer">
-              <img src={stream.img} alt={stream.host} className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
+            <div key={stream.id} onClick={() => setActiveStream(stream)} className="min-w-[300px] aspect-[9/16.5] rounded-[4.5rem] bg-slate-900 overflow-hidden relative snap-center border border-white/10 shadow-[0_40px_80px_-20px_rgba(0,0,0,0.8)] group cursor-pointer transition-all duration-500 hover:scale-[1.02]">
+              <img src={stream.img} alt={stream.host} className="w-full h-full object-cover transition-transform duration-[2.5s] group-hover:scale-110 opacity-70 group-hover:opacity-90" />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
               
-              <div className="absolute top-6 left-6 flex flex-col gap-2">
+              <div className="absolute top-10 left-10 flex flex-col gap-3">
                 <div className="flex gap-2">
-                  <span className="bg-emerald-600 text-[10px] font-black px-3 py-1 rounded-full text-white uppercase tracking-wider shadow-lg">LIVE</span>
-                  <span className="bg-black/60 backdrop-blur-md text-[10px] font-bold px-3 py-1 rounded-full text-white flex items-center gap-1.5 border border-white/10">
-                    <i className="fa-solid fa-eye text-[10px]"></i> {stream.viewers}
+                  <span className="bg-emerald-600 text-[9px] font-black px-4 py-1.5 rounded-full text-white uppercase tracking-widest shadow-xl border border-white/10">LIVE</span>
+                  <span className="bg-slate-950/60 backdrop-blur-xl text-[9px] font-black px-4 py-1.5 rounded-full text-white flex items-center gap-2 border border-white/10">
+                    <i className="fa-solid fa-eye text-[9px]"></i> {stream.viewers}
                   </span>
                 </div>
               </div>
               
-              <div className="absolute bottom-8 left-8 right-8">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-12 h-12 rounded-2xl border-2 border-emerald-500 overflow-hidden shadow-xl">
+              <div className="absolute bottom-12 left-10 right-10">
+                <div className="flex items-center gap-5 mb-5">
+                  <div className="w-14 h-14 rounded-[1.75rem] border-2 border-emerald-500 overflow-hidden shadow-2xl">
                     <img src={`https://i.pravatar.cc/150?u=${stream.host}`} alt={stream.host} className="w-full h-full object-cover" />
                   </div>
                   <div>
-                    <h4 className="font-black text-white tracking-tight">{stream.host}</h4>
-                    <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Verified Host</p>
+                    <h4 className="font-black text-white text-xl italic tracking-tighter leading-none">{stream.host}</h4>
+                    <p className="text-[9px] text-slate-500 font-black uppercase tracking-widest mt-1 opacity-80">Verified Intent</p>
                   </div>
                 </div>
-                <p className="text-sm font-semibold text-slate-100 leading-relaxed line-clamp-2 italic drop-shadow-md">
+                <p className="text-base font-semibold text-slate-100 leading-relaxed line-clamp-2 italic drop-shadow-xl pr-4">
                    "{stream.title}"
                 </p>
               </div>
 
-              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20 backdrop-blur-[2px]">
-                 <button className="px-8 py-3 bg-white text-black rounded-full font-black text-xs uppercase tracking-widest shadow-2xl active:scale-95 transition-all">
-                    Tune In
-                 </button>
+              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 bg-slate-950/20 backdrop-blur-[4px]">
+                 <div className="w-20 h-20 rounded-full petal-gradient flex items-center justify-center text-white text-2xl shadow-[0_0_30px_rgba(16,185,129,0.5)]">
+                    <i className="fa-solid fa-play ml-1"></i>
+                 </div>
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      <div className="bg-gradient-to-br from-slate-900 to-slate-950 rounded-[2.5rem] p-8 border border-white/5 shadow-2xl relative overflow-hidden group">
-        <div className="absolute -top-10 -right-10 w-40 h-40 bg-emerald-500/10 blur-[60px] rounded-full group-hover:bg-emerald-500/20 transition-all duration-700"></div>
-        <div className="relative z-10 space-y-4">
-          <div className="flex items-center gap-3">
-             <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 flex items-center justify-center text-emerald-500 border border-emerald-500/20">
-                <i className="fa-solid fa-video text-xl"></i>
+      <div className="bg-slate-950/40 p-12 rounded-[4.5rem] border border-white/5 shadow-inner relative overflow-hidden group mx-1">
+        <div className="absolute -top-20 -right-20 w-80 h-80 bg-emerald-500/5 blur-[120px] rounded-full group-hover:bg-emerald-500/10 transition-all duration-1000"></div>
+        <div className="relative z-10 space-y-6">
+          <div className="flex items-center gap-5">
+             <div className="w-16 h-16 rounded-[2rem] bg-emerald-500/10 flex items-center justify-center text-emerald-500 border border-emerald-500/20 shadow-xl group-hover:rotate-12 transition-transform duration-700">
+                <i className="fa-solid fa-video text-2xl"></i>
              </div>
-             <h3 className="font-black text-2xl tracking-tight">Host for your City</h3>
+             <div className="space-y-1">
+                <h3 className="font-black text-3xl tracking-tighter text-white italic">Host the Scene</h3>
+                <p className="text-[9px] font-black text-slate-500 uppercase tracking-widest">Global visibility, local vibe</p>
+             </div>
           </div>
-          <p className="text-xs text-slate-400 font-medium leading-relaxed">
-            Go live and interact with <span className="text-white font-black italic">everyone local</span> in real-time. Boost your visibility and make intentional connections beyond matches!
+          <p className="text-[11px] text-slate-400 font-medium leading-relaxed px-2">
+            Go live to interact with <span className="text-white font-black italic">everyone local</span> in real-time. Boost your visibility and attract intentional sparks instantly.
           </p>
-          <div className="pt-2">
-            <button onClick={startBroadcast} className="w-full py-5 shimmer-btn text-white rounded-[1.5rem] font-black text-sm uppercase tracking-[0.2em] shadow-xl active:scale-95 transition-all flex items-center justify-center gap-3">
-              <i className="fa-solid fa-tower-broadcast"></i>
-              Start Your Local Sesh
+          <div className="pt-4">
+            <button onClick={startBroadcast} className="w-full py-6 shimmer-btn text-white rounded-[2.5rem] font-black text-xs uppercase tracking-[0.3em] shadow-2xl active:scale-95 transition-all border border-white/20">
+              Launch Local Sesh
             </button>
           </div>
         </div>
       </div>
 
       {showSafetyAgreement && (
-        <div className="fixed inset-0 z-[300] bg-slate-950/98 flex items-center justify-center p-6 animate-in slide-in-from-bottom duration-500">
-           <div className="w-full max-w-sm glass rounded-[3.5rem] border-white/10 p-10 space-y-8 shadow-2xl overflow-y-auto max-h-[90vh]">
-              <div className="text-center space-y-2">
-                <div className="w-16 h-16 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-emerald-500 mx-auto border border-emerald-500/20 mb-4">
-                  <i className="fa-solid fa-shield-halved text-2xl"></i>
+        <div className="fixed inset-0 z-[300] bg-slate-950/98 backdrop-blur-3xl flex items-center justify-center p-8 animate-in slide-in-from-bottom duration-700">
+           <div className="w-full max-w-sm glass rounded-[4.5rem] border-white/10 p-12 space-y-10 shadow-2xl overflow-y-auto max-h-[90vh]">
+              <div className="text-center space-y-3">
+                <div className="w-20 h-20 bg-emerald-500/10 rounded-[2rem] flex items-center justify-center text-emerald-500 mx-auto border border-emerald-500/20 mb-6 shadow-xl">
+                  <i className="fa-solid fa-hand-holding-heart text-3xl"></i>
                 </div>
-                <h3 className="text-2xl font-black text-white italic tracking-tighter">Live Broadcast Agreement</h3>
-                <p className="text-[10px] font-black uppercase tracking-widest text-emerald-500">Apple & Google Safety Compliance</p>
+                <h3 className="text-3xl font-black text-white italic tracking-tighter">Safe Scene Terms</h3>
+                <p className="text-[9px] font-black uppercase tracking-[0.4em] text-emerald-500 opacity-80 leading-relaxed">Identity Verified Interaction</p>
               </div>
 
-              <div className="space-y-4">
-                 <div className="p-4 bg-slate-900/50 rounded-2xl border border-white/5">
-                   <h4 className="text-[10px] font-black text-white uppercase tracking-widest mb-1">PROHIBITED CONTENT</h4>
-                   <p className="text-[9px] text-slate-400 leading-relaxed">
-                     Harassment, nudity, violence, or hate speech are strictly prohibited. ScissHER maintains a zero-tolerance policy for objectionable content.
+              <div className="space-y-5">
+                 <div className="p-6 bg-slate-900/60 rounded-[2.5rem] border border-white/5 space-y-2">
+                   <h4 className="text-[10px] font-black text-white uppercase tracking-widest">ZERO TOLERANCE</h4>
+                   <p className="text-[9px] text-slate-500 leading-relaxed font-medium">
+                     Any harassment, inappropriate content, or lack of intention results in an immediate and permanent hardware ban.
                    </p>
                  </div>
-                 <div className="p-4 bg-slate-900/50 rounded-2xl border border-white/5">
-                   <h4 className="text-[10px] font-black text-white uppercase tracking-widest mb-1">USER REPORTING</h4>
-                   <p className="text-[9px] text-slate-400 leading-relaxed">
-                     Users can report and block you instantly. Verified violations result in a permanent hardware ban.
+                 <div className="p-6 bg-slate-900/60 rounded-[2.5rem] border border-white/5 space-y-2">
+                   <h4 className="text-[10px] font-black text-white uppercase tracking-widest">REAL-TIME REPORTING</h4>
+                   <p className="text-[9px] text-slate-500 leading-relaxed font-medium">
+                     Our AI monitors for liveness and safety. Participants can flag content instantly for 24/7 human review.
                    </p>
                  </div>
               </div>
 
-              <div className="space-y-3">
-                <button onClick={confirmSafetyAndStart} className="w-full py-5 shimmer-btn text-white rounded-[2rem] font-black text-xs uppercase tracking-[0.2em] shadow-xl">
-                   Accept & Go Live
+              <div className="space-y-4 pt-4">
+                <button onClick={confirmSafetyAndStart} className="w-full py-6 shimmer-btn text-white rounded-[2.5rem] font-black text-xs uppercase tracking-[0.3em] shadow-2xl border border-white/20 active:scale-95 transition-all">
+                   I Agree & Go Live
                 </button>
-                <button onClick={() => setShowSafetyAgreement(false)} className="w-full text-[10px] font-black uppercase tracking-widest text-slate-600">
-                   Cancel
+                <button onClick={() => setShowSafetyAgreement(false)} className="w-full text-[10px] font-black uppercase tracking-[0.4em] text-slate-600 hover:text-white transition-colors py-2">
+                   Decline Sesh
                 </button>
               </div>
            </div>

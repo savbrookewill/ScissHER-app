@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from './components/Header';
 import Navigation from './components/Navigation';
 import DiscoveryView from './components/DiscoveryView';
@@ -27,8 +27,17 @@ const App: React.FC = () => {
   const [likedUsers, setLikedUsers] = useState<string[]>([]);
   const [privateAccessList, setPrivateAccessList] = useState<string[]>([]);
 
+  // Simulation of "Launch Ready" persistent state check
+  useEffect(() => {
+    const isReturning = localStorage.getItem('scissher_auth');
+    if (isReturning === 'true') {
+      setAuthState('authorized');
+    }
+  }, []);
+
   const handleAuthorized = () => {
     setAuthState('authorized');
+    localStorage.setItem('scissher_auth', 'true');
     setShowHype(true);
   };
 
@@ -53,6 +62,18 @@ const App: React.FC = () => {
     handleAuthorized();
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem('scissher_auth');
+    setAuthState('landing');
+  };
+
+  const handleUpdateTickets = (count: number) => {
+    if (currentUser) {
+      setCurrentUser({ ...currentUser, speedDatingTickets: count });
+    }
+  };
+
+  // Auth Flow Orchestrator
   if (authState === 'landing') {
     return <AuthView onLogin={handleAuthorized} onCreateAccount={() => setAuthState('verifying')} />;
   }
@@ -69,12 +90,6 @@ const App: React.FC = () => {
     return <PhotoOnboarding onComplete={handleOnboardingComplete} />;
   }
 
-  const handleUpdateTickets = (count: number) => {
-    if (currentUser) {
-      setCurrentUser({ ...currentUser, speedDatingTickets: count });
-    }
-  };
-
   const renderView = () => {
     switch (currentView) {
       case 'discovery':
@@ -88,7 +103,7 @@ const App: React.FC = () => {
       case 'live':
         return <LiveView />;
       case 'profile':
-        return <ProfileView user={currentUser} onReset={() => setAuthState('landing')} />;
+        return <ProfileView user={currentUser} onReset={handleLogout} />;
       case 'vault':
         return <VaultView user={currentUser} onGrantAccess={(id) => setPrivateAccessList(prev => [...prev, id])} />;
       default:
