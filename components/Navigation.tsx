@@ -30,7 +30,8 @@ const Navigation: React.FC<NavigationProps> = ({ currentView, setView }) => {
           <div className="relative">
             {item.component ? (
               <div className={currentView === item.id ? 'animate-[bounce_2s_infinite]' : ''}>
-                {React.cloneElement(item.component as React.ReactElement, { color: currentView === item.id ? '#10b981' : 'currentColor' })}
+                {/* Cast to any to allow the custom 'color' prop in cloneElement */}
+                {React.cloneElement(item.component as React.ReactElement<any>, { color: currentView === item.id ? '#10b981' : 'currentColor' })}
               </div>
             ) : (
               <i className={`${item.icon} text-lg xs:text-xl`}></i>
