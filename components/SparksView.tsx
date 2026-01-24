@@ -23,7 +23,7 @@ const SparksView: React.FC<SparksViewProps> = ({ likedUsers, onUpgrade }) => {
     <div className="space-y-6 pb-20">
       <div className="flex items-center justify-between px-2">
         <h2 className="text-3xl font-black tracking-tighter shimmer-text">Electric Scene</h2>
-        <span className="text-pink-500 text-[10px] font-black uppercase tracking-[0.2em]">{likedUsers.length} SPARKS FIRED</span>
+        <span className="text-emerald-500 text-[10px] font-black uppercase tracking-[0.2em]">{likedUsers.length} SPARKS FIRED</span>
       </div>
 
       <div className="grid grid-cols-2 gap-4">
@@ -69,15 +69,15 @@ const SparksView: React.FC<SparksViewProps> = ({ likedUsers, onUpgrade }) => {
       </div>
       
       <div className="bg-gradient-to-br from-slate-900 to-slate-950 border border-white/5 p-8 rounded-[3rem] text-center space-y-5 shadow-2xl relative overflow-hidden group">
-        <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-purple-500/10 blur-[60px] rounded-full group-hover:bg-purple-500/20 transition-all"></div>
-        <div className="w-14 h-14 bg-purple-500/20 rounded-[1.5rem] mx-auto flex items-center justify-center text-purple-400 shadow-xl border border-purple-500/20 relative z-10">
+        <div className="absolute -bottom-10 -right-10 w-40 h-40 bg-emerald-500/10 blur-[60px] rounded-full group-hover:bg-emerald-500/20 transition-all"></div>
+        <div className="w-14 h-14 bg-emerald-500/20 rounded-[1.5rem] mx-auto flex items-center justify-center text-emerald-400 shadow-xl border border-emerald-500/20 relative z-10">
            <i className="fa-solid fa-sparkles text-2xl"></i>
         </div>
         <div className="relative z-10">
           <h3 className="font-black text-2xl tracking-tight shimmer-text">Full Connection</h3>
           <p className="text-xs text-slate-500 font-medium leading-relaxed px-4">Stop guessing who's vibing with you. Reveal the Sparks before you even swipe.</p>
         </div>
-        <button onClick={onUpgrade} className="w-full py-4 shimmer-btn rounded-2xl font-black text-sm uppercase tracking-[0.2em] text-white shadow-xl shadow-purple-600/20 active:scale-95 transition-all relative z-10">Ascend to Premium</button>
+        <button onClick={onUpgrade} className="w-full py-4 shimmer-btn rounded-2xl font-black text-sm uppercase tracking-[0.2em] text-white shadow-xl shadow-emerald-600/20 active:scale-95 transition-all relative z-10">Ascend to Premium</button>
       </div>
 
       {selectedUser && (

@@ -23,12 +23,13 @@
       border: 1px solid rgba(255, 255, 255, 0.05);
     }
     
+    /* NEW PRISMATIC THEME: Emerald, Teal, and Deep Indigo */
     .petal-gradient {
-      background: linear-gradient(135deg, #ff0080 0%, #7928ca 100%);
+      background: linear-gradient(135deg, #10b981 0%, #6366f1 100%);
     }
 
     .shimmer-text {
-      background: linear-gradient(90deg, #ff0080, #7928ca, #ff0080);
+      background: linear-gradient(90deg, #10b981, #6366f1, #06b6d4, #10b981);
       background-size: 200% auto;
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -36,7 +37,7 @@
     }
 
     .shimmer-btn {
-      background: linear-gradient(90deg, #ff0080, #7928ca, #ff0080);
+      background: linear-gradient(90deg, #10b981, #6366f1, #06b6d4, #10b981);
       background-size: 200% auto;
       transition: 0.5s;
       animation: shimmer 3s linear infinite;
@@ -54,6 +55,12 @@
       to { transform: rotate(360deg); }
     }
     .animate-spin-slow { animation: spin-slow 8s linear infinite; }
+
+    /* Custom mask for fade effects */
+    .mask-gradient-b {
+      mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+    }
   </style>
 <script type="importmap">
 {

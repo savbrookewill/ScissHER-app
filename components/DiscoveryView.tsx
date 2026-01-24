@@ -52,7 +52,7 @@ const DiscoveryView: React.FC<{ onLike: (id: string) => void }> = ({ onLike }) =
           
           <div className="absolute top-8 right-8 z-10">
             <div className="bg-white/10 backdrop-blur-xl border border-white/20 px-4 py-2 rounded-2xl flex items-center gap-2 shadow-2xl animate-in slide-in-from-right-10">
-               <div className="w-2 h-2 rounded-full bg-pink-500 animate-pulse"></div>
+               <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
                <span className="text-[8px] font-black uppercase tracking-widest text-white">Verified Connection</span>
             </div>
           </div>
@@ -64,13 +64,13 @@ const DiscoveryView: React.FC<{ onLike: (id: string) => void }> = ({ onLike }) =
                   {user.name}, {user.age}
                 </h3>
                 {user.isVerified && (
-                  <div className="w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center text-[10px] text-white shadow-lg">
+                  <div className="w-5 h-5 bg-emerald-500 rounded-full flex items-center justify-center text-[10px] text-white shadow-lg">
                     <i className="fa-solid fa-check"></i>
                   </div>
                 )}
               </div>
               <div className="flex flex-wrap gap-2 mb-3">
-                <span className="text-[8px] font-black uppercase tracking-widest px-3 py-1.5 bg-pink-500/20 border border-pink-500/30 rounded-full text-pink-300 backdrop-blur-md">
+                <span className="text-[8px] font-black uppercase tracking-widest px-3 py-1.5 bg-emerald-500/20 border border-emerald-500/30 rounded-full text-emerald-300 backdrop-blur-md">
                   {user.relationshipStyle}
                 </span>
                 <span className="text-[8px] font-black uppercase tracking-widest px-3 py-1.5 bg-white/5 border border-white/10 rounded-full text-slate-300 backdrop-blur-md">
@@ -93,14 +93,14 @@ const DiscoveryView: React.FC<{ onLike: (id: string) => void }> = ({ onLike }) =
             
             <button 
               onClick={() => setShowProfile(true)}
-              className="w-20 h-20 glass rounded-full flex items-center justify-center text-white border border-white/10 hover:border-purple-500/30 hover:text-white transition-all active:scale-90 shadow-2xl"
+              className="w-20 h-20 glass rounded-full flex items-center justify-center text-white border border-white/10 hover:border-emerald-500/30 hover:text-white transition-all active:scale-90 shadow-2xl"
             >
               <i className="fa-solid fa-user text-3xl"></i>
             </button>
 
             <button 
               onClick={() => handleAction('like')}
-              className="w-16 h-16 petal-gradient rounded-full flex items-center justify-center text-white shadow-[0_10px_30px_rgba(255,0,128,0.5)] active:scale-90 transition-all border-2 border-white/20"
+              className="w-16 h-16 petal-gradient rounded-full flex items-center justify-center text-white shadow-[0_10px_30px_rgba(16,185,129,0.5)] active:scale-90 transition-all border-2 border-white/20"
             >
               <i className="fa-solid fa-bolt-lightning text-2xl"></i>
             </button>

@@ -26,7 +26,6 @@ export const RoseIcon = ({ className = "w-6 h-6", color = "currentColor" }: { cl
   </svg>
 );
 
-// Fix: Added missing SunflowerIcon export required by PetalsView component
 export const SunflowerIcon = ({ className = "w-6 h-6", color = "currentColor" }: { className?: string, color?: string }) => (
   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
     <circle cx="12" cy="12" r="3" fill={color} />
@@ -40,26 +39,42 @@ export const SunflowerIcon = ({ className = "w-6 h-6", color = "currentColor" }:
   </svg>
 );
 
+export const SeshClockIcon = ({ className = "w-6 h-6", color = "currentColor" }: { className?: string, color?: string }) => (
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
+    {/* Scissor Handle Bells */}
+    <circle cx="7" cy="5" r="3" stroke={color} strokeWidth="1.5" />
+    <circle cx="17" cy="5" r="3" stroke={color} strokeWidth="1.5" />
+    {/* Clock Face */}
+    <circle cx="12" cy="13" r="8" stroke={color} strokeWidth="2" />
+    {/* Clock Hands (Scissor Blades) */}
+    <path d="M12 13L15 9" stroke={color} strokeWidth="2" strokeLinecap="round" />
+    <path d="M12 13L9 9" stroke={color} strokeWidth="2" strokeLinecap="round" />
+    {/* Stand */}
+    <path d="M8 20L6 22" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
+    <path d="M16 20L18 22" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
+  </svg>
+);
+
 const Header: React.FC = () => {
   return (
     <header className="px-6 py-5 flex items-center justify-between sticky top-0 z-50 glass border-b border-white/5 overflow-hidden">
       <div className="flex items-center gap-4 relative">
         <div className="absolute -left-2 top-2 animate-pulse">
-          <RoseIcon className="w-3 h-3 text-pink-500 rotate-[-20deg]" />
+          <RoseIcon className="w-3 h-3 text-emerald-500 rotate-[-20deg]" />
         </div>
 
-        <div className="w-11 h-11 petal-gradient rounded-xl flex items-center justify-center text-white shadow-[0_0_25px_rgba(255,0,128,0.4)] rotate-[15deg] group hover:rotate-0 transition-all duration-700 border border-white/20">
+        <div className="w-11 h-11 petal-gradient rounded-xl flex items-center justify-center text-white shadow-[0_0_25px_rgba(16,185,129,0.4)] rotate-[15deg] group hover:rotate-0 transition-all duration-700 border border-white/20">
           <NormalScissorsIcon className="w-7 h-7 drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]" color="white" />
         </div>
 
         <div className="absolute left-9 -bottom-1 animate-pulse delay-75">
-          <RoseIcon className="w-2.5 h-2.5 text-purple-500 rotate-[15deg]" />
+          <RoseIcon className="w-2.5 h-2.5 text-indigo-500 rotate-[15deg]" />
         </div>
 
         <div className="flex flex-col ml-1">
           <h1 className="text-xl font-black tracking-tight leading-none flex items-center gap-1">
             <span className="shimmer-text">ScissHER</span>
-            <i className="fa-solid fa-sparkles text-[10px] text-pink-400"></i>
+            <i className="fa-solid fa-sparkles text-[10px] text-emerald-400"></i>
           </h1>
           <span className="text-[7px] font-black text-slate-500 uppercase tracking-[0.3em] mt-1">
             Interact With Intention
@@ -68,10 +83,10 @@ const Header: React.FC = () => {
       </div>
       
       <div className="flex gap-3 text-slate-400">
-        <button className="w-9 h-9 rounded-xl bg-slate-900/50 border border-white/5 flex items-center justify-center hover:text-pink-500 transition-all shadow-lg">
+        <button className="w-9 h-9 rounded-xl bg-slate-900/50 border border-white/5 flex items-center justify-center hover:text-emerald-500 transition-all shadow-lg">
           <i className="fa-regular fa-bell text-lg"></i>
         </button>
-        <button className="w-9 h-9 rounded-xl bg-slate-900/50 border border-white/5 flex items-center justify-center hover:text-purple-500 transition-all shadow-lg">
+        <button className="w-9 h-9 rounded-xl bg-slate-900/50 border border-white/5 flex items-center justify-center hover:text-indigo-500 transition-all shadow-lg">
           <i className="fa-solid fa-sliders text-lg"></i>
         </button>
       </div>

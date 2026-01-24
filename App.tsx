@@ -97,7 +97,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#020617] text-slate-100 font-sans selection:bg-pink-500/30 overflow-x-hidden pb-40">
+    <div className="min-h-screen bg-[#020617] text-slate-100 font-sans selection:bg-emerald-500/30 overflow-x-hidden pb-40">
       <Header />
       <main className="max-w-md mx-auto px-4 pt-4">
         {renderView()}
